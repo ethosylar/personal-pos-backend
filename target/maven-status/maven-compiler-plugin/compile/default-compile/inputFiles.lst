@@ -1,9 +1,17 @@
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\entity\AuditActionEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\entity\AuditLogEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\repository\AuditActionRepository.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\repository\AuditLogRepository.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\request\AuditLogRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\audit\service\AuditService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\bootstrap\AdminBootstrapInitializer.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\controller\AuthController.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\request\ChangePasswordRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\request\LoginRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\response\AuthUserResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\response\LoginResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\service\AuthService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\auth\service\LoginAttemptService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\controller\LookupController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\entity\TimestampedEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\BusinessRuleException.java
@@ -41,6 +49,8 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\response\RoleModuleResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\response\RoleResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\service\RoleService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\handler\RestAccessDeniedHandler.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\handler\RestAuthenticationEntryPoint.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\jwt\JwtConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\jwt\JwtTokenService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\service\DatabaseUserDetailsService.java
@@ -55,6 +65,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\request\AssignUserRolesRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\request\ChangeUserStatusRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\request\CreateUserRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\request\ResetUserPasswordRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\request\UpdateUserRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\response\UserDetailResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\response\UserResponse.java
