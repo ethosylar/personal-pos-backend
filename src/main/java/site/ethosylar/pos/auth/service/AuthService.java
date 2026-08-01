@@ -8,13 +8,16 @@ import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.auth.request.ChangePasswordRequest;
 import site.ethosylar.pos.auth.request.LoginRequest;
 import site.ethosylar.pos.auth.response.AuthUserResponse;
 import site.ethosylar.pos.auth.response.LoginResponse;
+import site.ethosylar.pos.common.exception.BusinessRuleException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
 import site.ethosylar.pos.permission.service.PermissionService;
 import site.ethosylar.pos.security.jwt.JwtTokenService;
@@ -34,24 +37,38 @@ public class AuthService {
     private final UserRoleRepository userRoleRepository;
 
     private final PermissionService permissionService;
+    private final LoginAttemptService loginAttemptService;
+    private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenService jwtTokenService;
 
     public LoginResponse login(
             LoginRequest request) {
 
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getUsername().trim(),
-                request.getPassword()
-            )
-        );
+    	try {
+    	    authenticationManager.authenticate(
+    	        new UsernamePasswordAuthenticationToken(
+    	            request.getUsername().trim(),
+    	            request.getPassword()
+    	        )
+    	    );
+
+    	} catch (org.springframework.security.authentication.BadCredentialsException ex) {
+
+    	    loginAttemptService.recordFailure(
+    	            request.getUsername()
+    	    );
+
+    	    throw ex;
+    	}
 
         UserEntity user =
                 getUserByUsername(
                     request.getUsername()
                 );
-
+        
+        loginAttemptService.resetFailures(user);
+        
         user.setLastLoginAt(
                 OffsetDateTime.now()
         );
@@ -160,5 +177,51 @@ public class AuthService {
                         "User not found."
                     )
                 );
+    }
+    
+    public void changePassword(
+            String username,
+            ChangePasswordRequest request) {
+
+        UserEntity user =
+                getUserByUsername(username);
+
+        if (!passwordEncoder.matches(
+                request.getCurrentPassword(),
+                user.getPasswordHash())) {
+
+            throw new BusinessRuleException(
+                    "Current password is incorrect."
+            );
+        }
+
+        if (!request.getNewPassword()
+                .equals(request.getConfirmPassword())) {
+
+            throw new BusinessRuleException(
+                    "New password and confirmation do not match."
+            );
+        }
+
+        if (passwordEncoder.matches(
+                request.getNewPassword(),
+                user.getPasswordHash())) {
+
+            throw new BusinessRuleException(
+                    "New password must be different from the current password."
+            );
+        }
+
+        user.setPasswordHash(
+                passwordEncoder.encode(
+                    request.getNewPassword()
+                )
+        );
+
+        user.setPasswordChangedAt(
+                OffsetDateTime.now()
+        );
+
+        userRepository.save(user);
     }
 }

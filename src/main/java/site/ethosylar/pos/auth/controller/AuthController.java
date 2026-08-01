@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.auth.request.ChangePasswordRequest;
 import site.ethosylar.pos.auth.request.LoginRequest;
 import site.ethosylar.pos.auth.response.AuthUserResponse;
 import site.ethosylar.pos.auth.response.LoginResponse;
@@ -42,5 +43,20 @@ public class AuthController {
                     authentication.getName()
                 )
         );
+    }
+    
+    @PostMapping("/change-password")
+    public ResponseEntity<Void> changePassword(
+            Authentication authentication,
+            @Valid
+            @RequestBody
+            ChangePasswordRequest request) {
+
+        authService.changePassword(
+                authentication.getName(),
+                request
+        );
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -13,13 +13,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import site.ethosylar.pos.security.handler.RestAccessDeniedHandler;
+import site.ethosylar.pos.security.handler.RestAuthenticationEntryPoint;
+
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(
-            HttpSecurity http)
+            HttpSecurity http,
+            RestAuthenticationEntryPoint authenticationEntryPoint,
+            RestAccessDeniedHandler accessDeniedHandler)
             throws Exception {
 
         http
@@ -30,6 +35,16 @@ public class SecurityConfig {
                     SessionCreationPolicy.STATELESS
                 )
             )
+            
+            .exceptionHandling(exception ->
+	            exception
+	                .authenticationEntryPoint(
+	                    authenticationEntryPoint
+	                )
+	                .accessDeniedHandler(
+	                    accessDeniedHandler
+	                )
+	        )
 
             .authorizeHttpRequests(authorize ->
                 authorize

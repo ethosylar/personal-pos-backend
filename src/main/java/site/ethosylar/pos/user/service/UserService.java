@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.exception.BusinessRuleException;
 import site.ethosylar.pos.common.exception.DuplicateResourceException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
 import site.ethosylar.pos.role.entity.RoleEntity;
@@ -23,6 +24,7 @@ import site.ethosylar.pos.user.repository.UserStatusRepository;
 import site.ethosylar.pos.user.request.AssignUserRolesRequest;
 import site.ethosylar.pos.user.request.ChangeUserStatusRequest;
 import site.ethosylar.pos.user.request.CreateUserRequest;
+import site.ethosylar.pos.user.request.ResetUserPasswordRequest;
 import site.ethosylar.pos.user.request.UpdateUserRequest;
 import site.ethosylar.pos.user.response.UserDetailResponse;
 import site.ethosylar.pos.user.response.UserResponse;
@@ -162,6 +164,10 @@ public class UserService {
                         );
 
         user.setStatus(status);
+        
+        if ("ACTIVE".equalsIgnoreCase(status.getCode())) {
+            user.setFailedLoginAttempts(0);
+        }
 
         userRepository.save(user);
 
@@ -301,5 +307,34 @@ public class UserService {
         }
 
         return email.trim().toLowerCase();
+    }
+    
+    public void resetPassword(
+            Long id,
+            ResetUserPasswordRequest request) {
+
+        UserEntity user = getUserEntity(id);
+
+        if (!request.getNewPassword()
+                .equals(request.getConfirmPassword())) {
+
+            throw new BusinessRuleException(
+                    "Password and confirmation do not match."
+            );
+        }
+
+        user.setPasswordHash(
+                passwordEncoder.encode(
+                    request.getNewPassword()
+                )
+        );
+
+        user.setPasswordChangedAt(
+                OffsetDateTime.now()
+        );
+
+        user.setFailedLoginAttempts(0);
+
+        userRepository.save(user);
     }
 }

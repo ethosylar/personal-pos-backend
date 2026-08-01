@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.user.request.AssignUserRolesRequest;
 import site.ethosylar.pos.user.request.ChangeUserStatusRequest;
 import site.ethosylar.pos.user.request.CreateUserRequest;
+import site.ethosylar.pos.user.request.ResetUserPasswordRequest;
 import site.ethosylar.pos.user.request.UpdateUserRequest;
 import site.ethosylar.pos.user.response.UserDetailResponse;
 import site.ethosylar.pos.user.response.UserResponse;
@@ -123,4 +124,25 @@ public class UserController {
                 )
         );
     }
+    
+    @PreAuthorize(
+    	    "@permissionService.hasPermission("
+    	    + "authentication, "
+    	    + "'USER_MANAGEMENT', "
+    	    + "'RESET_PASSWORD')"
+    	)
+    	@PatchMapping("/{id}/password/reset")
+    	public ResponseEntity<Void> resetPassword(
+    	        @PathVariable Long id,
+    	        @Valid
+    	        @RequestBody
+    	        ResetUserPasswordRequest request) {
+
+    	    userService.resetPassword(
+    	            id,
+    	            request
+    	    );
+
+    	    return ResponseEntity.noContent().build();
+    	}
 }
