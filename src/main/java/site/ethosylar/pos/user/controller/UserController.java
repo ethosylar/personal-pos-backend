@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,13 @@ import site.ethosylar.pos.user.service.UserService;
 public class UserController {
 
     private final UserService userService;
-
+    
+    @PreAuthorize(
+    	    "@permissionService.hasPermission("
+    	    + "authentication, "
+    	    + "'USER_MANAGEMENT', "
+    	    + "'VIEW')"
+    	)
     @GetMapping
     public ResponseEntity<List<UserResponse>>
             getAllUsers() {
@@ -48,7 +55,13 @@ public class UserController {
                 userService.getUserById(id)
         );
     }
-
+    
+    @PreAuthorize(
+    	    "@permissionService.hasPermission("
+    	    + "authentication, "
+    	    + "'USER_MANAGEMENT', "
+    	    + "'CREATE')"
+    	)
     @PostMapping
     public ResponseEntity<UserDetailResponse>
             createUser(

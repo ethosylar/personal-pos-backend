@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import site.ethosylar.pos.common.response.ApiErrorResponse;
@@ -125,5 +128,36 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(response);
+    }
+    
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse>
+            handleBadCredentials(
+                    BadCredentialsException ex,
+                    HttpServletRequest request) {
+
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "Invalid username or password.",
+                request.getRequestURI(),
+                null
+        );
+    }
+
+    @ExceptionHandler({
+        DisabledException.class,
+        LockedException.class
+    })
+    public ResponseEntity<ApiErrorResponse>
+            handleUnavailableAccount(
+                    RuntimeException ex,
+                    HttpServletRequest request) {
+
+        return buildResponse(
+                HttpStatus.FORBIDDEN,
+                "User account is not available.",
+                request.getRequestURI(),
+                null
+        );
     }
 }

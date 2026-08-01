@@ -5,6 +5,7 @@ site\ethosylar\pos\common\exception\ResourceNotFoundException.class
 site\ethosylar\pos\user\repository\UserRoleRepository.class
 site\ethosylar\pos\common\exception\DuplicateResourceException.class
 site\ethosylar\pos\permission\response\ModulePermissionResponse.class
+site\ethosylar\pos\auth\controller\AuthController.class
 site\ethosylar\pos\user\response\UserRoleResponse.class
 site\ethosylar\pos\role\request\CreateRoleRequest.class
 site\ethosylar\pos\permission\mapper\ModulePermissionMapper.class
@@ -17,12 +18,19 @@ site\ethosylar\pos\common\exception\BusinessRuleException.class
 site\ethosylar\pos\common\entity\TimestampedEntity.class
 site\ethosylar\pos\user\response\UserStatusResponse$UserStatusResponseBuilder.class
 site\ethosylar\pos\user\repository\UserStatusRepository.class
+site\ethosylar\pos\auth\response\AuthUserResponse$AuthUserResponseBuilder.class
+site\ethosylar\pos\auth\service\AuthService.class
 site\ethosylar\pos\permission\service\ModulePermissionService.class
+site\ethosylar\pos\config\SecurityConfig.class
 site\ethosylar\pos\role\request\UpdateRoleRequest.class
 site\ethosylar\pos\user\response\UserDetailResponse$UserDetailResponseBuilder.class
 site\ethosylar\pos\user\entity\UserStatusEntity.class
+site\ethosylar\pos\permission\service\PermissionService.class
 site\ethosylar\pos\role\request\AssignModulePermissionsRequest.class
 site\ethosylar\pos\user\response\UserResponse$UserResponseBuilder.class
+site\ethosylar\pos\auth\request\LoginRequest.class
+site\ethosylar\pos\auth\response\LoginResponse$LoginResponseBuilder.class
+site\ethosylar\pos\auth\bootstrap\AdminBootstrapInitializer.class
 site\ethosylar\pos\module\entity\ModuleEntity.class
 site\ethosylar\pos\module\response\ModuleResponse$ModuleResponseBuilder.class
 site\ethosylar\pos\user\request\AssignUserRolesRequest.class
@@ -35,9 +43,12 @@ site\ethosylar\pos\user\service\UserStatusService.class
 site\ethosylar\pos\module\response\ModuleResponse.class
 site\ethosylar\pos\common\controller\LookupController.class
 site\ethosylar\pos\common\exception\GlobalExceptionHandler.class
+site\ethosylar\pos\security\jwt\JwtTokenService.class
+site\ethosylar\pos\security\service\DatabaseUserDetailsService.class
 site\ethosylar\pos\user\request\CreateUserRequest.class
 site\ethosylar\pos\permission\entity\ModulePermissionEntity.class
 site\ethosylar\pos\role\mapper\RoleMapper.class
+site\ethosylar\pos\auth\response\LoginResponse.class
 site\ethosylar\pos\user\controller\UserController.class
 site\ethosylar\pos\user\mapper\UserMapper.class
 site\ethosylar\pos\role\response\RoleDetailResponse$RoleDetailResponseBuilder.class
@@ -46,6 +57,7 @@ site\ethosylar\pos\common\response\ApiErrorResponse$ApiErrorResponseBuilder.clas
 site\ethosylar\pos\permission\response\ModulePermissionResponse$ModulePermissionResponseBuilder.class
 site\ethosylar\pos\module\mapper\ModuleMapper.class
 site\ethosylar\pos\role\repository\RoleRepository.class
+site\ethosylar\pos\security\jwt\JwtConfig.class
 site\ethosylar\pos\user\repository\UserRepository.class
 site\ethosylar\pos\role\response\RoleResponse.class
 site\ethosylar\pos\user\response\UserResponse.class
@@ -59,5 +71,6 @@ site\ethosylar\pos\module\service\ModuleService.class
 site\ethosylar\pos\role\controller\RoleController.class
 site\ethosylar\pos\role\entity\RoleModuleEntity.class
 site\ethosylar\pos\role\request\AssignRoleModulesRequest.class
+site\ethosylar\pos\auth\response\AuthUserResponse.class
 site\ethosylar\pos\role\service\RoleService.class
 site\ethosylar\pos\permission\repository\RoleModulePermissionRepository.class
