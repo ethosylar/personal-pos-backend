@@ -1,5 +1,6 @@
 package site.ethosylar.pos.audit.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,7 @@ public interface AuditActionRepository
 
     Optional<AuditActionEntity>
         findByCodeIgnoreCase(String code);
+    
+    List<AuditActionEntity>
+    findByActiveTrueOrderByNameAsc();
 }
