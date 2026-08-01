@@ -209,14 +209,10 @@ public class RoleService {
 
         RoleModuleEntity roleModule =
                 roleModuleRepository
-                        .findByRole_Id(roleId)
-                        .stream()
-                        .filter(rm ->
-                            rm.getModule()
-                                .getId()
-                                .equals(moduleId)
+                        .findByRole_IdAndModule_Id(
+                                roleId,
+                                moduleId
                         )
-                        .findFirst()
                         .orElseThrow(() ->
                             new BusinessRuleException(
                                 "The selected module is not assigned to this role."

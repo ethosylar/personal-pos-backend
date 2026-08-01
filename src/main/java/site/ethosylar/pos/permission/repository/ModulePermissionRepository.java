@@ -12,6 +12,9 @@ public interface ModulePermissionRepository
 
     List<ModulePermissionEntity> findByModule_Id(Long moduleId);
 
+    List<ModulePermissionEntity>
+        findByModule_IdAndActiveTrueOrderByIdAsc(Long moduleId);
+
     Optional<ModulePermissionEntity>
         findByModule_IdAndCodeIgnoreCase(
             Long moduleId,

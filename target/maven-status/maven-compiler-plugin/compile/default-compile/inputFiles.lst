@@ -1,3 +1,4 @@
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\controller\LookupController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\entity\TimestampedEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\BusinessRuleException.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\DuplicateResourceException.java
@@ -9,13 +10,16 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\module\mapper\ModuleMapper.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\module\repository\ModuleRepository.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\module\response\ModuleResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\module\service\ModuleService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\entity\ModulePermissionEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\entity\RoleModulePermissionEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\mapper\ModulePermissionMapper.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\repository\ModulePermissionRepository.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\repository\RoleModulePermissionRepository.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\response\ModulePermissionResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\service\ModulePermissionService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\PersonalPosBackendApplication.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\controller\RoleController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\entity\RoleEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\entity\RoleModuleEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\mapper\RoleMapper.java
@@ -29,6 +33,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\response\RoleModuleResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\response\RoleResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\service\RoleService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\controller\UserController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\entity\UserEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\entity\UserRoleEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\entity\UserStatusEntity.java
@@ -45,3 +50,4 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\response\UserRoleResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\response\UserStatusResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\service\UserService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\user\service\UserStatusService.java
