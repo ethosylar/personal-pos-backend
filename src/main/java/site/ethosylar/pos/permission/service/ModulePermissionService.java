@@ -17,29 +17,19 @@ import site.ethosylar.pos.permission.response.ModulePermissionResponse;
 @Transactional(readOnly = true)
 public class ModulePermissionService {
 
-    private final ModuleRepository moduleRepository;
+	private final ModuleRepository moduleRepository;
 
-    private final ModulePermissionRepository
-            modulePermissionRepository;
+	private final ModulePermissionRepository modulePermissionRepository;
 
-    private final ModulePermissionMapper
-            modulePermissionMapper;
+	private final ModulePermissionMapper modulePermissionMapper;
 
-    public List<ModulePermissionResponse>
-            getActivePermissionsByModule(Long moduleId) {
+	public List<ModulePermissionResponse> getActivePermissionsByModule(Long moduleId) {
 
-        if (!moduleRepository.existsById(moduleId)) {
-            throw new ResourceNotFoundException(
-                    "Module not found."
-            );
-        }
+		if (!moduleRepository.existsById(moduleId)) {
+			throw new ResourceNotFoundException("Module not found.");
+		}
 
-        return modulePermissionRepository
-                .findByModule_IdAndActiveTrueOrderByIdAsc(
-                        moduleId
-                )
-                .stream()
-                .map(modulePermissionMapper::toResponse)
-                .toList();
-    }
+		return modulePermissionRepository.findByModule_IdAndActiveTrueOrderByIdAsc(moduleId).stream()
+				.map(modulePermissionMapper::toResponse).toList();
+	}
 }

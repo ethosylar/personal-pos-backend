@@ -22,88 +22,61 @@ import site.ethosylar.pos.user.repository.UserStatusRepository;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(
-    name = "pos.bootstrap.admin.enabled",
-    havingValue = "true"
-)
-public class AdminBootstrapInitializer
-        implements ApplicationRunner {
+@ConditionalOnProperty(name = "pos.bootstrap.admin.enabled", havingValue = "true")
+public class AdminBootstrapInitializer implements ApplicationRunner {
 
-    private final UserRepository userRepository;
-    private final UserStatusRepository
-            userStatusRepository;
-    private final RoleRepository roleRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final UserStatusRepository userStatusRepository;
+	private final RoleRepository roleRepository;
+	private final UserRoleRepository userRoleRepository;
+	private final PasswordEncoder passwordEncoder;
 
-    @Value("${pos.bootstrap.admin.username}")
-    private String username;
+	@Value("${pos.bootstrap.admin.username}")
+	private String username;
 
-    @Value("${pos.bootstrap.admin.password}")
-    private String password;
+	@Value("${pos.bootstrap.admin.password}")
+	private String password;
 
-    @Value("${pos.bootstrap.admin.full-name}")
-    private String fullName;
+	@Value("${pos.bootstrap.admin.full-name}")
+	private String fullName;
 
-    @Override
-    @Transactional
-    public void run(
-            ApplicationArguments args) {
+	@Override
+	@Transactional
+	public void run(ApplicationArguments args) {
 
-        if (userRepository.count() > 0) {
+		if (userRepository.count() > 0) {
 
-            log.info(
-                "Administrator bootstrap skipped: "
-                + "users already exist."
-            );
+			log.info("Administrator bootstrap skipped: " + "users already exist.");
 
-            return;
-        }
+			return;
+		}
 
-        if (username == null
-                || username.isBlank()
-                || password == null
-                || password.isBlank()) {
+		if (username == null || username.isBlank() || password == null || password.isBlank()) {
 
-            throw new IllegalStateException(
-                "Bootstrap administrator "
-                + "username/password are required."
-            );
-        }
+			throw new IllegalStateException("Bootstrap administrator " + "username/password are required.");
+		}
 
-        UserStatusEntity activeStatus =
-                userStatusRepository
-                    .findByCodeIgnoreCase("ACTIVE")
-                    .orElseThrow();
+		UserStatusEntity activeStatus = userStatusRepository.findByCodeIgnoreCase("ACTIVE").orElseThrow();
 
-        RoleEntity adminRole =
-                roleRepository
-                    .findByCodeIgnoreCase("ADMIN")
-                    .orElseThrow();
+		RoleEntity adminRole = roleRepository.findByCodeIgnoreCase("ADMIN").orElseThrow();
 
-        UserEntity admin =
-                new UserEntity();
+		UserEntity admin = new UserEntity();
 
-        admin.setUsername(username.trim());
-        admin.setPasswordHash(
-                passwordEncoder.encode(password)
-        );
-        admin.setFullName(fullName.trim());
-        admin.setStatus(activeStatus);
-        admin.setFailedLoginAttempts(0);
+		admin.setUsername(username.trim());
+		admin.setPasswordHash(passwordEncoder.encode(password));
+		admin.setFullName(fullName.trim());
+		admin.setStatus(activeStatus);
+		admin.setFailedLoginAttempts(0);
 
-        admin = userRepository.save(admin);
+		admin = userRepository.save(admin);
 
-        UserRoleEntity assignment =
-                new UserRoleEntity();
+		UserRoleEntity assignment = new UserRoleEntity();
 
-        assignment.setUser(admin);
-        assignment.setRole(adminRole);
+		assignment.setUser(admin);
+		assignment.setRole(adminRole);
 
-        userRoleRepository.save(assignment);
+		userRoleRepository.save(assignment);
 
-        log.info(
-            "Initial administrator account created."
-        );
-    }
+		log.info("Initial administrator account created.");
+	}
 }

@@ -21,44 +21,27 @@ import site.ethosylar.pos.user.service.UserStatusService;
 @RequiredArgsConstructor
 public class LookupController {
 
-    private final UserStatusService userStatusService;
+	private final UserStatusService userStatusService;
 
-    private final ModuleService moduleService;
+	private final ModuleService moduleService;
 
-    private final ModulePermissionService
-            modulePermissionService;
+	private final ModulePermissionService modulePermissionService;
 
-    @GetMapping("/user-statuses")
-    public ResponseEntity<List<UserStatusResponse>>
-            getUserStatuses() {
+	@GetMapping("/user-statuses")
+	public ResponseEntity<List<UserStatusResponse>> getUserStatuses() {
 
-        return ResponseEntity.ok(
-                userStatusService.getActiveStatuses()
-        );
-    }
+		return ResponseEntity.ok(userStatusService.getActiveStatuses());
+	}
 
-    @GetMapping("/modules")
-    public ResponseEntity<List<ModuleResponse>>
-            getModules() {
+	@GetMapping("/modules")
+	public ResponseEntity<List<ModuleResponse>> getModules() {
 
-        return ResponseEntity.ok(
-                moduleService.getActiveModules()
-        );
-    }
+		return ResponseEntity.ok(moduleService.getActiveModules());
+	}
 
-    @GetMapping(
-        "/modules/{moduleId}/permissions"
-    )
-    public ResponseEntity<
-            List<ModulePermissionResponse>>
-            getModulePermissions(
-                    @PathVariable Long moduleId) {
+	@GetMapping("/modules/{moduleId}/permissions")
+	public ResponseEntity<List<ModulePermissionResponse>> getModulePermissions(@PathVariable Long moduleId) {
 
-        return ResponseEntity.ok(
-                modulePermissionService
-                    .getActivePermissionsByModule(
-                        moduleId
-                    )
-        );
-    }
+		return ResponseEntity.ok(modulePermissionService.getActivePermissionsByModule(moduleId));
+	}
 }

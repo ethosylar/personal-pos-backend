@@ -21,42 +21,26 @@ import site.ethosylar.pos.auth.service.AuthService;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+	private final AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @Valid
-            @RequestBody
-            LoginRequest request) {
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
 
-        return ResponseEntity.ok(
-                authService.login(request)
-        );
-    }
+		return ResponseEntity.ok(authService.login(request));
+	}
 
-    @GetMapping("/me")
-    public ResponseEntity<AuthUserResponse> me(
-            Authentication authentication) {
+	@GetMapping("/me")
+	public ResponseEntity<AuthUserResponse> me(Authentication authentication) {
 
-        return ResponseEntity.ok(
-                authService.getCurrentUser(
-                    authentication.getName()
-                )
-        );
-    }
-    
-    @PostMapping("/change-password")
-    public ResponseEntity<Void> changePassword(
-            Authentication authentication,
-            @Valid
-            @RequestBody
-            ChangePasswordRequest request) {
+		return ResponseEntity.ok(authService.getCurrentUser(authentication.getName()));
+	}
 
-        authService.changePassword(
-                authentication.getName(),
-                request
-        );
+	@PostMapping("/change-password")
+	public ResponseEntity<Void> changePassword(Authentication authentication,
+			@Valid @RequestBody ChangePasswordRequest request) {
 
-        return ResponseEntity.noContent().build();
-    }
+		authService.changePassword(authentication.getName(), request);
+
+		return ResponseEntity.noContent().build();
+	}
 }

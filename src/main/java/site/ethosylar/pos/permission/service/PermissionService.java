@@ -16,40 +16,27 @@ import site.ethosylar.pos.permission.repository.RoleModulePermissionRepository;
 @Transactional(readOnly = true)
 public class PermissionService {
 
-    private final RoleModulePermissionRepository
-            roleModulePermissionRepository;
+	private final RoleModulePermissionRepository roleModulePermissionRepository;
 
-    public boolean hasPermission(
-            Authentication authentication,
-            String moduleCode,
-            String permissionCode) {
+	public boolean hasPermission(Authentication authentication, String moduleCode, String permissionCode) {
 
-        if (authentication == null
-                || !authentication.isAuthenticated()
-                || authentication
-                    instanceof AnonymousAuthenticationToken) {
+		if (authentication == null || !authentication.isAuthenticated()
+				|| authentication instanceof AnonymousAuthenticationToken) {
 
-            return false;
-        }
+			return false;
+		}
 
-        return roleModulePermissionRepository
-                .existsEffectivePermission(
-                    authentication.getName(),
-                    moduleCode.toUpperCase(),
-                    permissionCode.toUpperCase()
-                );
-    }
+		return roleModulePermissionRepository.existsEffectivePermission(authentication.getName(),
+				moduleCode.toUpperCase(), permissionCode.toUpperCase());
+	}
 
-    public List<String> getEffectivePermissions(
-            String username) {
+	public List<String> getEffectivePermissions(String username) {
 
-        if (username == null
-                || username.isBlank()) {
+		if (username == null || username.isBlank()) {
 
-            return Collections.emptyList();
-        }
+			return Collections.emptyList();
+		}
 
-        return roleModulePermissionRepository
-                .findEffectivePermissions(username);
-    }
+		return roleModulePermissionRepository.findEffectivePermissions(username);
+	}
 }

@@ -28,100 +28,52 @@ import site.ethosylar.pos.role.service.RoleService;
 @RequiredArgsConstructor
 public class RoleController {
 
-    private final RoleService roleService;
+	private final RoleService roleService;
 
-    @GetMapping
-    public ResponseEntity<List<RoleResponse>>
-            getAllRoles() {
+	@GetMapping
+	public ResponseEntity<List<RoleResponse>> getAllRoles() {
 
-        return ResponseEntity.ok(
-                roleService.getAllRoles()
-        );
-    }
+		return ResponseEntity.ok(roleService.getAllRoles());
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RoleDetailResponse>
-            getRoleById(
-                    @PathVariable Long id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<RoleDetailResponse> getRoleById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                roleService.getRoleById(id)
-        );
-    }
+		return ResponseEntity.ok(roleService.getRoleById(id));
+	}
 
-    @PostMapping
-    public ResponseEntity<RoleDetailResponse>
-            createRole(
-                    @Valid
-                    @RequestBody
-                    CreateRoleRequest request) {
+	@PostMapping
+	public ResponseEntity<RoleDetailResponse> createRole(@Valid @RequestBody CreateRoleRequest request) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                    roleService.createRole(request)
-                );
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(roleService.createRole(request));
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RoleDetailResponse>
-            updateRole(
-                    @PathVariable Long id,
-                    @Valid
-                    @RequestBody
-                    UpdateRoleRequest request) {
+	@PutMapping("/{id}")
+	public ResponseEntity<RoleDetailResponse> updateRole(@PathVariable Long id,
+			@Valid @RequestBody UpdateRoleRequest request) {
 
-        return ResponseEntity.ok(
-                roleService.updateRole(
-                        id,
-                        request
-                )
-        );
-    }
+		return ResponseEntity.ok(roleService.updateRole(id, request));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void>
-            deleteRole(
-                    @PathVariable Long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteRole(@PathVariable Long id) {
 
-        roleService.deleteRole(id);
+		roleService.deleteRole(id);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @PutMapping("/{id}/modules")
-    public ResponseEntity<RoleDetailResponse>
-            assignModules(
-                    @PathVariable Long id,
-                    @Valid
-                    @RequestBody
-                    AssignRoleModulesRequest request) {
+	@PutMapping("/{id}/modules")
+	public ResponseEntity<RoleDetailResponse> assignModules(@PathVariable Long id,
+			@Valid @RequestBody AssignRoleModulesRequest request) {
 
-        return ResponseEntity.ok(
-                roleService.assignModules(
-                        id,
-                        request
-                )
-        );
-    }
+		return ResponseEntity.ok(roleService.assignModules(id, request));
+	}
 
-    @PutMapping(
-        "/{roleId}/modules/{moduleId}/permissions"
-    )
-    public ResponseEntity<RoleDetailResponse>
-            assignModulePermissions(
-                    @PathVariable Long roleId,
-                    @PathVariable Long moduleId,
-                    @Valid
-                    @RequestBody
-                    AssignModulePermissionsRequest request) {
+	@PutMapping("/{roleId}/modules/{moduleId}/permissions")
+	public ResponseEntity<RoleDetailResponse> assignModulePermissions(@PathVariable Long roleId,
+			@PathVariable Long moduleId, @Valid @RequestBody AssignModulePermissionsRequest request) {
 
-        return ResponseEntity.ok(
-                roleService.assignModulePermissions(
-                        roleId,
-                        moduleId,
-                        request
-                )
-        );
-    }
+		return ResponseEntity.ok(roleService.assignModulePermissions(roleId, moduleId, request));
+	}
 }

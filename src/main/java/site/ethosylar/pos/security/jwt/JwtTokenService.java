@@ -18,47 +18,27 @@ import site.ethosylar.pos.user.entity.UserEntity;
 @RequiredArgsConstructor
 public class JwtTokenService {
 
-    private final JwtEncoder jwtEncoder;
+	private final JwtEncoder jwtEncoder;
 
-    @Value("${pos.security.jwt.issuer}")
-    private String issuer;
+	@Value("${pos.security.jwt.issuer}")
+	private String issuer;
 
-    @Value("${pos.security.jwt.access-token-ttl}")
-    private Duration accessTokenTtl;
+	@Value("${pos.security.jwt.access-token-ttl}")
+	private Duration accessTokenTtl;
 
-    public String generateAccessToken(
-            UserEntity user) {
+	public String generateAccessToken(UserEntity user) {
 
-        Instant now = Instant.now();
+		Instant now = Instant.now();
 
-        JwtClaimsSet claims =
-                JwtClaimsSet.builder()
-                    .issuer(issuer)
-                    .issuedAt(now)
-                    .expiresAt(
-                        now.plus(accessTokenTtl)
-                    )
-                    .subject(user.getUsername())
-                    .claim("uid", user.getId())
-                    .build();
+		JwtClaimsSet claims = JwtClaimsSet.builder().issuer(issuer).issuedAt(now).expiresAt(now.plus(accessTokenTtl))
+				.subject(user.getUsername()).claim("uid", user.getId()).build();
 
-        JwsHeader header =
-                JwsHeader
-                    .with(MacAlgorithm.HS256)
-                    .type("JWT")
-                    .build();
+		JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).type("JWT").build();
 
-        return jwtEncoder
-                .encode(
-                    JwtEncoderParameters.from(
-                        header,
-                        claims
-                    )
-                )
-                .getTokenValue();
-    }
+		return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
+	}
 
-    public long getExpiresInSeconds() {
-        return accessTokenTtl.toSeconds();
-    }
+	public long getExpiresInSeconds() {
+		return accessTokenTtl.toSeconds();
+	}
 }

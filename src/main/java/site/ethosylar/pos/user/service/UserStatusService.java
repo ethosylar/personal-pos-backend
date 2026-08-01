@@ -14,20 +14,11 @@ import site.ethosylar.pos.user.response.UserStatusResponse;
 @Transactional(readOnly = true)
 public class UserStatusService {
 
-    private final UserStatusRepository userStatusRepository;
+	private final UserStatusRepository userStatusRepository;
 
-    public List<UserStatusResponse> getActiveStatuses() {
+	public List<UserStatusResponse> getActiveStatuses() {
 
-        return userStatusRepository
-                .findByActiveTrueOrderByNameAsc()
-                .stream()
-                .map(status ->
-                    UserStatusResponse.builder()
-                        .id(status.getId())
-                        .code(status.getCode())
-                        .name(status.getName())
-                        .build()
-                )
-                .toList();
-    }
+		return userStatusRepository.findByActiveTrueOrderByNameAsc().stream().map(status -> UserStatusResponse.builder()
+				.id(status.getId()).code(status.getCode()).name(status.getName()).build()).toList();
+	}
 }

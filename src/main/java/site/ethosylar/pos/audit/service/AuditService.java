@@ -27,180 +27,112 @@ import tools.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class AuditService {
 
-    private final AuditLogRepository auditLogRepository;
+	private final AuditLogRepository auditLogRepository;
 
-    private final AuditActionRepository
-            auditActionRepository;
+	private final AuditActionRepository auditActionRepository;
 
-    private final ModuleRepository moduleRepository;
+	private final ModuleRepository moduleRepository;
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    private final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
-    @Transactional
-    public void log(AuditLogRequest request) {
+	@Transactional
+	public void log(AuditLogRequest request) {
 
-        AuditActionEntity action =
-                auditActionRepository
-                    .findByCodeIgnoreCase(
-                        request.getActionCode()
-                    )
-                    .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                            "Audit action not found: "
-                            + request.getActionCode()
-                        )
-                    );
+		AuditActionEntity action = auditActionRepository.findByCodeIgnoreCase(request.getActionCode())
+				.orElseThrow(() -> new ResourceNotFoundException("Audit action not found: " + request.getActionCode()));
 
-        ModuleEntity module =
-                resolveModule(
-                    request.getModuleCode()
-                );
+		ModuleEntity module = resolveModule(request.getModuleCode());
 
-        UserEntity user =
-                resolveActor(
-                    request.getActorUserId()
-                );
+		UserEntity user = resolveActor(request.getActorUserId());
 
-        HttpServletRequest httpRequest =
-                currentHttpRequest();
+		HttpServletRequest httpRequest = currentHttpRequest();
 
-        AuditLogEntity audit =
-                new AuditLogEntity();
+		AuditLogEntity audit = new AuditLogEntity();
 
-        audit.setUser(user);
-        audit.setAction(action);
-        audit.setModule(module);
+		audit.setUser(user);
+		audit.setAction(action);
+		audit.setModule(module);
 
-        audit.setEntityType(
-            request.getEntityType()
-        );
+		audit.setEntityType(request.getEntityType());
 
-        audit.setEntityId(
-            request.getEntityId()
-        );
+		audit.setEntityId(request.getEntityId());
 
-        audit.setDescription(
-            request.getDescription()
-        );
+		audit.setDescription(request.getDescription());
 
-        audit.setBeforeData(
-            toJson(request.getBeforeData())
-        );
+		audit.setBeforeData(toJson(request.getBeforeData()));
 
-        audit.setAfterData(
-            toJson(request.getAfterData())
-        );
+		audit.setAfterData(toJson(request.getAfterData()));
 
-        if (httpRequest != null) {
+		if (httpRequest != null) {
 
-            audit.setIpAddress(
-                httpRequest.getRemoteAddr()
-            );
+			audit.setIpAddress(httpRequest.getRemoteAddr());
 
-            audit.setUserAgent(
-                truncate(
-                    httpRequest.getHeader(
-                        "User-Agent"
-                    ),
-                    500
-                )
-            );
-        }
+			audit.setUserAgent(truncate(httpRequest.getHeader("User-Agent"), 500));
+		}
 
-        auditLogRepository.save(audit);
-    }
+		auditLogRepository.save(audit);
+	}
 
-    private UserEntity resolveActor(
-            Long actorUserId) {
+	private UserEntity resolveActor(Long actorUserId) {
 
-        if (actorUserId != null) {
+		if (actorUserId != null) {
 
-            return userRepository
-                    .findById(actorUserId)
-                    .orElse(null);
-        }
+			return userRepository.findById(actorUserId).orElse(null);
+		}
 
-        Authentication authentication =
-                SecurityContextHolder
-                    .getContext()
-                    .getAuthentication();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null
-                || !authentication
-                    .isAuthenticated()
-                || authentication
-                    instanceof AnonymousAuthenticationToken) {
+		if (authentication == null || !authentication.isAuthenticated()
+				|| authentication instanceof AnonymousAuthenticationToken) {
 
-            return null;
-        }
+			return null;
+		}
 
-        return userRepository
-                .findByUsernameIgnoreCase(
-                    authentication.getName()
-                )
-                .orElse(null);
-    }
+		return userRepository.findByUsernameIgnoreCase(authentication.getName()).orElse(null);
+	}
 
-    private ModuleEntity resolveModule(
-            String moduleCode) {
+	private ModuleEntity resolveModule(String moduleCode) {
 
-        if (moduleCode == null
-                || moduleCode.isBlank()) {
+		if (moduleCode == null || moduleCode.isBlank()) {
 
-            return null;
-        }
+			return null;
+		}
 
-        return moduleRepository
-                .findByCodeIgnoreCase(
-                    moduleCode
-                )
-                .orElseThrow(() ->
-                    new ResourceNotFoundException(
-                        "Module not found: "
-                        + moduleCode
-                    )
-                );
-    }
+		return moduleRepository.findByCodeIgnoreCase(moduleCode)
+				.orElseThrow(() -> new ResourceNotFoundException("Module not found: " + moduleCode));
+	}
 
-    private JsonNode toJson(Object value) {
+	private JsonNode toJson(Object value) {
 
-        if (value == null) {
-            return null;
-        }
+		if (value == null) {
+			return null;
+		}
 
-        return objectMapper.valueToTree(value);
-    }
+		return objectMapper.valueToTree(value);
+	}
 
-    private HttpServletRequest
-            currentHttpRequest() {
+	private HttpServletRequest currentHttpRequest() {
 
-        if (!(RequestContextHolder
-                .getRequestAttributes()
-                instanceof ServletRequestAttributes attributes)) {
+		if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes attributes)) {
 
-            return null;
-        }
+			return null;
+		}
 
-        return attributes.getRequest();
-    }
+		return attributes.getRequest();
+	}
 
-    private String truncate(
-            String value,
-            int maxLength) {
+	private String truncate(String value, int maxLength) {
 
-        if (value == null) {
-            return null;
-        }
+		if (value == null) {
+			return null;
+		}
 
-        if (value.length() <= maxLength) {
-            return value;
-        }
+		if (value.length() <= maxLength) {
+			return value;
+		}
 
-        return value.substring(
-                0,
-                maxLength
-        );
-    }
+		return value.substring(0, maxLength);
+	}
 }

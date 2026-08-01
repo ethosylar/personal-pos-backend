@@ -18,39 +18,22 @@ import tools.jackson.databind.ObjectMapper;
 
 @Component
 @RequiredArgsConstructor
-public class RestAuthenticationEntryPoint
-        implements AuthenticationEntryPoint {
+public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
-    @Override
-    public void commence(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException)
-            throws IOException, ServletException {
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException, ServletException {
 
-        ApiErrorResponse body =
-                ApiErrorResponse.builder()
-                        .timestamp(OffsetDateTime.now())
-                        .status(HttpStatus.UNAUTHORIZED.value())
-                        .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                        .message("Authentication is required.")
-                        .path(request.getRequestURI())
-                        .validationErrors(null)
-                        .build();
+		ApiErrorResponse body = ApiErrorResponse.builder().timestamp(OffsetDateTime.now())
+				.status(HttpStatus.UNAUTHORIZED.value()).error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+				.message("Authentication is required.").path(request.getRequestURI()).validationErrors(null).build();
 
-        response.setStatus(
-                HttpStatus.UNAUTHORIZED.value()
-        );
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
-        response.setContentType(
-                MediaType.APPLICATION_JSON_VALUE
-        );
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(
-                response.getOutputStream(),
-                body
-        );
-    }
+		objectMapper.writeValue(response.getOutputStream(), body);
+	}
 }

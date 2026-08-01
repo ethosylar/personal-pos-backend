@@ -30,119 +30,57 @@ import site.ethosylar.pos.user.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-    
-    @PreAuthorize(
-    	    "@permissionService.hasPermission("
-    	    + "authentication, "
-    	    + "'USER_MANAGEMENT', "
-    	    + "'VIEW')"
-    	)
-    @GetMapping
-    public ResponseEntity<List<UserResponse>>
-            getAllUsers() {
+	private final UserService userService;
 
-        return ResponseEntity.ok(
-                userService.getAllUsers()
-        );
-    }
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'USER_MANAGEMENT', " + "'VIEW')")
+	@GetMapping
+	public ResponseEntity<List<UserResponse>> getAllUsers() {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDetailResponse>
-            getUserById(
-                    @PathVariable Long id) {
+		return ResponseEntity.ok(userService.getAllUsers());
+	}
 
-        return ResponseEntity.ok(
-                userService.getUserById(id)
-        );
-    }
-    
-    @PreAuthorize(
-    	    "@permissionService.hasPermission("
-    	    + "authentication, "
-    	    + "'USER_MANAGEMENT', "
-    	    + "'CREATE')"
-    	)
-    @PostMapping
-    public ResponseEntity<UserDetailResponse>
-            createUser(
-                    @Valid
-                    @RequestBody
-                    CreateUserRequest request) {
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDetailResponse> getUserById(@PathVariable Long id) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                    userService.createUser(request)
-                );
-    }
+		return ResponseEntity.ok(userService.getUserById(id));
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDetailResponse>
-            updateUser(
-                    @PathVariable Long id,
-                    @Valid
-                    @RequestBody
-                    UpdateUserRequest request) {
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'USER_MANAGEMENT', " + "'CREATE')")
+	@PostMapping
+	public ResponseEntity<UserDetailResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
 
-        return ResponseEntity.ok(
-                userService.updateUser(
-                        id,
-                        request
-                )
-        );
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+	}
 
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<UserDetailResponse>
-            changeUserStatus(
-                    @PathVariable Long id,
-                    @Valid
-                    @RequestBody
-                    ChangeUserStatusRequest request) {
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDetailResponse> updateUser(@PathVariable Long id,
+			@Valid @RequestBody UpdateUserRequest request) {
 
-        return ResponseEntity.ok(
-                userService.changeUserStatus(
-                        id,
-                        request
-                )
-        );
-    }
+		return ResponseEntity.ok(userService.updateUser(id, request));
+	}
 
-    @PutMapping("/{id}/roles")
-    public ResponseEntity<UserDetailResponse>
-            assignRoles(
-                    @PathVariable Long id,
-                    @Valid
-                    @RequestBody
-                    AssignUserRolesRequest request) {
+	@PatchMapping("/{id}/status")
+	public ResponseEntity<UserDetailResponse> changeUserStatus(@PathVariable Long id,
+			@Valid @RequestBody ChangeUserStatusRequest request) {
 
-        return ResponseEntity.ok(
-                userService.assignRoles(
-                        id,
-                        request
-                )
-        );
-    }
-    
-    @PreAuthorize(
-    	    "@permissionService.hasPermission("
-    	    + "authentication, "
-    	    + "'USER_MANAGEMENT', "
-    	    + "'RESET_PASSWORD')"
-    	)
-    	@PatchMapping("/{id}/password/reset")
-    	public ResponseEntity<Void> resetPassword(
-    	        @PathVariable Long id,
-    	        @Valid
-    	        @RequestBody
-    	        ResetUserPasswordRequest request) {
+		return ResponseEntity.ok(userService.changeUserStatus(id, request));
+	}
 
-    	    userService.resetPassword(
-    	            id,
-    	            request
-    	    );
+	@PutMapping("/{id}/roles")
+	public ResponseEntity<UserDetailResponse> assignRoles(@PathVariable Long id,
+			@Valid @RequestBody AssignUserRolesRequest request) {
 
-    	    return ResponseEntity.noContent().build();
-    	}
+		return ResponseEntity.ok(userService.assignRoles(id, request));
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'USER_MANAGEMENT', "
+			+ "'RESET_PASSWORD')")
+	@PatchMapping("/{id}/password/reset")
+	public ResponseEntity<Void> resetPassword(@PathVariable Long id,
+			@Valid @RequestBody ResetUserPasswordRequest request) {
+
+		userService.resetPassword(id, request);
+
+		return ResponseEntity.noContent().build();
+	}
 }

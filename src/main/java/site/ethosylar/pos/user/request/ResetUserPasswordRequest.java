@@ -9,14 +9,10 @@ import lombok.Setter;
 @Setter
 public class ResetUserPasswordRequest {
 
-    @NotBlank
-    @Size(
-        min = 8,
-        max = 100,
-        message = "Password must contain between 8 and 100 characters."
-    )
-    private String newPassword;
+	@NotBlank
+	@Size(min = 8, max = 100, message = "Password must contain between 8 and 100 characters.")
+	private String newPassword;
 
-    @NotBlank
-    private String confirmPassword;
+	@NotBlank
+	private String confirmPassword;
 }

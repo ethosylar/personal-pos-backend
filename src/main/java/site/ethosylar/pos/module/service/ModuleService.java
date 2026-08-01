@@ -15,15 +15,12 @@ import site.ethosylar.pos.module.response.ModuleResponse;
 @Transactional(readOnly = true)
 public class ModuleService {
 
-    private final ModuleRepository moduleRepository;
-    private final ModuleMapper moduleMapper;
+	private final ModuleRepository moduleRepository;
+	private final ModuleMapper moduleMapper;
 
-    public List<ModuleResponse> getActiveModules() {
+	public List<ModuleResponse> getActiveModules() {
 
-        return moduleRepository
-                .findByActiveTrueOrderByDisplayOrderAsc()
-                .stream()
-                .map(moduleMapper::toResponse)
-                .toList();
-    }
+		return moduleRepository.findByActiveTrueOrderByDisplayOrderAsc().stream().map(moduleMapper::toResponse)
+				.toList();
+	}
 }

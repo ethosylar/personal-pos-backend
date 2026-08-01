@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.audit.request.AuditLogRequest;
+import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.auth.request.ChangePasswordRequest;
 import site.ethosylar.pos.auth.request.LoginRequest;
 import site.ethosylar.pos.auth.response.AuthUserResponse;
@@ -30,198 +32,129 @@ import site.ethosylar.pos.user.repository.UserRoleRepository;
 @Transactional
 public class AuthService {
 
-    private final AuthenticationManager
-            authenticationManager;
+	private final AuthenticationManager authenticationManager;
 
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
+	private final UserRepository userRepository;
+	private final UserRoleRepository userRoleRepository;
 
-    private final PermissionService permissionService;
-    private final LoginAttemptService loginAttemptService;
-    private final PasswordEncoder passwordEncoder;
+	private final PermissionService permissionService;
+	private final LoginAttemptService loginAttemptService;
+	private final PasswordEncoder passwordEncoder;
 
-    private final JwtTokenService jwtTokenService;
+	private final JwtTokenService jwtTokenService;
 
-    public LoginResponse login(
-            LoginRequest request) {
+	private final AuditService auditService;
 
-    	try {
-    	    authenticationManager.authenticate(
-    	        new UsernamePasswordAuthenticationToken(
-    	            request.getUsername().trim(),
-    	            request.getPassword()
-    	        )
-    	    );
+	public LoginResponse login(LoginRequest request) {
 
-    	} catch (org.springframework.security.authentication.BadCredentialsException ex) {
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(request.getUsername().trim(), request.getPassword()));
 
-    	    loginAttemptService.recordFailure(
-    	            request.getUsername()
-    	    );
+		} catch (org.springframework.security.authentication.BadCredentialsException ex) {
 
-    	    throw ex;
-    	}
+			loginAttemptService.recordFailure(request.getUsername());
 
-        UserEntity user =
-                getUserByUsername(
-                    request.getUsername()
-                );
-        
-        loginAttemptService.resetFailures(user);
-        
-        user.setLastLoginAt(
-                OffsetDateTime.now()
-        );
+			throw ex;
+		}
 
-        user.setFailedLoginAttempts(0);
+		UserEntity user = getUserByUsername(request.getUsername());
 
-        userRepository.save(user);
+		loginAttemptService.resetFailures(user);
 
-        String token =
-                jwtTokenService
-                    .generateAccessToken(user);
+		user.setLastLoginAt(OffsetDateTime.now());
 
-        return LoginResponse.builder()
-                .tokenType("Bearer")
-                .accessToken(token)
-                .expiresIn(
-                    jwtTokenService
-                        .getExpiresInSeconds()
-                )
-                .user(buildAuthUserResponse(user))
-                .build();
-    }
+		user.setFailedLoginAttempts(0);
 
-    @Transactional(readOnly = true)
-    public AuthUserResponse getCurrentUser(
-            String username) {
+		userRepository.save(user);
 
-        return buildAuthUserResponse(
-                getUserByUsername(username)
-        );
-    }
+		Map<String, Object> loginAudit = new LinkedHashMap<>();
 
-    private AuthUserResponse buildAuthUserResponse(
-            UserEntity user) {
+		loginAudit.put("username", user.getUsername());
 
-        List<String> roles =
-                userRoleRepository
-                    .findByUser_Id(user.getId())
-                    .stream()
-                    .filter(userRole ->
-                        Boolean.TRUE.equals(
-                            userRole
-                                .getRole()
-                                .getActive()
-                        )
-                    )
-                    .map(userRole ->
-                        userRole
-                            .getRole()
-                            .getCode()
-                    )
-                    .distinct()
-                    .sorted()
-                    .toList();
+		loginAudit.put("status", user.getStatus().getCode());
 
-        List<String> effectivePermissions =
-                permissionService
-                    .getEffectivePermissions(
-                        user.getUsername()
-                    );
+		auditService.log(AuditLogRequest.builder().actorUserId(user.getId()).actionCode("LOGIN_SUCCESS")
+				.entityType("AUTHENTICATION").entityId(user.getId()).description("User successfully logged in.")
+				.afterData(loginAudit).build());
 
-        Map<String, List<String>>
-                groupedPermissions =
-                    new LinkedHashMap<>();
+		String token = jwtTokenService.generateAccessToken(user);
 
-        for (String value
-                : effectivePermissions) {
+		return LoginResponse.builder().tokenType("Bearer").accessToken(token)
+				.expiresIn(jwtTokenService.getExpiresInSeconds()).user(buildAuthUserResponse(user)).build();
+	}
 
-            String[] parts =
-                    value.split(":", 2);
+	@Transactional(readOnly = true)
+	public AuthUserResponse getCurrentUser(String username) {
 
-            if (parts.length != 2) {
-                continue;
-            }
+		return buildAuthUserResponse(getUserByUsername(username));
+	}
 
-            groupedPermissions
-                .computeIfAbsent(
-                    parts[0],
-                    key -> new ArrayList<>()
-                )
-                .add(parts[1]);
-        }
+	private AuthUserResponse buildAuthUserResponse(UserEntity user) {
 
-        return AuthUserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .status(
-                    user.getStatus().getCode()
-                )
-                .roles(roles)
-                .permissions(groupedPermissions)
-                .build();
-    }
+		List<String> roles = userRoleRepository.findByUser_Id(user.getId()).stream()
+				.filter(userRole -> Boolean.TRUE.equals(userRole.getRole().getActive()))
+				.map(userRole -> userRole.getRole().getCode()).distinct().sorted().toList();
 
-    private UserEntity getUserByUsername(
-            String username) {
+		List<String> effectivePermissions = permissionService.getEffectivePermissions(user.getUsername());
 
-        return userRepository
-                .findByUsernameIgnoreCase(
-                    username.trim()
-                )
-                .orElseThrow(() ->
-                    new ResourceNotFoundException(
-                        "User not found."
-                    )
-                );
-    }
-    
-    public void changePassword(
-            String username,
-            ChangePasswordRequest request) {
+		Map<String, List<String>> groupedPermissions = new LinkedHashMap<>();
 
-        UserEntity user =
-                getUserByUsername(username);
+		for (String value : effectivePermissions) {
 
-        if (!passwordEncoder.matches(
-                request.getCurrentPassword(),
-                user.getPasswordHash())) {
+			String[] parts = value.split(":", 2);
 
-            throw new BusinessRuleException(
-                    "Current password is incorrect."
-            );
-        }
+			if (parts.length != 2) {
+				continue;
+			}
 
-        if (!request.getNewPassword()
-                .equals(request.getConfirmPassword())) {
+			groupedPermissions.computeIfAbsent(parts[0], key -> new ArrayList<>()).add(parts[1]);
+		}
 
-            throw new BusinessRuleException(
-                    "New password and confirmation do not match."
-            );
-        }
+		return AuthUserResponse.builder().id(user.getId()).username(user.getUsername()).fullName(user.getFullName())
+				.email(user.getEmail()).status(user.getStatus().getCode()).roles(roles).permissions(groupedPermissions)
+				.build();
+	}
 
-        if (passwordEncoder.matches(
-                request.getNewPassword(),
-                user.getPasswordHash())) {
+	private UserEntity getUserByUsername(String username) {
 
-            throw new BusinessRuleException(
-                    "New password must be different from the current password."
-            );
-        }
+		return userRepository.findByUsernameIgnoreCase(username.trim())
+				.orElseThrow(() -> new ResourceNotFoundException("User not found."));
+	}
 
-        user.setPasswordHash(
-                passwordEncoder.encode(
-                    request.getNewPassword()
-                )
-        );
+	public void changePassword(String username, ChangePasswordRequest request) {
 
-        user.setPasswordChangedAt(
-                OffsetDateTime.now()
-        );
+		UserEntity user = getUserByUsername(username);
 
-        userRepository.save(user);
-    }
+		if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+
+			throw new BusinessRuleException("Current password is incorrect.");
+		}
+
+		if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+
+			throw new BusinessRuleException("New password and confirmation do not match.");
+		}
+
+		if (passwordEncoder.matches(request.getNewPassword(), user.getPasswordHash())) {
+
+			throw new BusinessRuleException("New password must be different from the current password.");
+		}
+
+		user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+
+		user.setPasswordChangedAt(OffsetDateTime.now());
+
+		userRepository.save(user);
+
+		Map<String, Object> auditData = new LinkedHashMap<>();
+
+		auditData.put("passwordChanged", true);
+
+		auditData.put("changedAt", user.getPasswordChangedAt());
+
+		auditService.log(AuditLogRequest.builder().actorUserId(user.getId()).actionCode("PASSWORD_CHANGE")
+				.moduleCode("USER_MANAGEMENT").entityType("USER").entityId(user.getId())
+				.description("User changed their password.").afterData(auditData).build());
+	}
 }

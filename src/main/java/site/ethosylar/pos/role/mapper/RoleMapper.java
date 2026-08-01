@@ -20,72 +20,40 @@ import site.ethosylar.pos.role.response.RoleResponse;
 @RequiredArgsConstructor
 public class RoleMapper {
 
-    private final ModuleMapper moduleMapper;
+	private final ModuleMapper moduleMapper;
 
-    private final ModulePermissionMapper modulePermissionMapper;
+	private final ModulePermissionMapper modulePermissionMapper;
 
-    public RoleResponse toResponse(RoleEntity role) {
+	public RoleResponse toResponse(RoleEntity role) {
 
-        return RoleResponse.builder()
-                .id(role.getId())
-                .code(role.getCode())
-                .name(role.getName())
-                .description(role.getDescription())
-                .system(role.getSystem())
-                .active(role.getActive())
-                .build();
-    }
+		return RoleResponse.builder().id(role.getId()).code(role.getCode()).name(role.getName())
+				.description(role.getDescription()).system(role.getSystem()).active(role.getActive()).build();
+	}
 
-    public RoleDetailResponse toDetailResponse(
-            RoleEntity role,
-            List<RoleModuleEntity> roleModules,
-            Map<Long, List<RoleModulePermissionEntity>> permissionsByRoleModule) {
+	public RoleDetailResponse toDetailResponse(RoleEntity role, List<RoleModuleEntity> roleModules,
+			Map<Long, List<RoleModulePermissionEntity>> permissionsByRoleModule) {
 
-        List<RoleModuleResponse> modules;
+		List<RoleModuleResponse> modules;
 
-        if (roleModules == null) {
-            modules = Collections.emptyList();
-        } else {
-            modules = roleModules.stream()
-                    .map(roleModule -> {
+		if (roleModules == null) {
+			modules = Collections.emptyList();
+		} else {
+			modules = roleModules.stream().map(roleModule -> {
 
-                        List<RoleModulePermissionEntity> permissions =
-                                permissionsByRoleModule.getOrDefault(
-                                        roleModule.getId(),
-                                        Collections.emptyList()
-                                );
+				List<RoleModulePermissionEntity> permissions = permissionsByRoleModule.getOrDefault(roleModule.getId(),
+						Collections.emptyList());
 
-                        return RoleModuleResponse.builder()
-                                .roleModuleId(roleModule.getId())
-                                .module(
-                                    moduleMapper.toResponse(
-                                        roleModule.getModule()
-                                    )
-                                )
-                                .permissions(
-                                    permissions.stream()
-                                        .map(permission ->
-                                            modulePermissionMapper.toResponse(
-                                                permission.getModulePermission()
-                                            )
-                                        )
-                                        .toList()
-                                )
-                                .build();
-                    })
-                    .toList();
-        }
+				return RoleModuleResponse.builder().roleModuleId(roleModule.getId())
+						.module(moduleMapper.toResponse(roleModule.getModule()))
+						.permissions(permissions.stream()
+								.map(permission -> modulePermissionMapper.toResponse(permission.getModulePermission()))
+								.toList())
+						.build();
+			}).toList();
+		}
 
-        return RoleDetailResponse.builder()
-                .id(role.getId())
-                .code(role.getCode())
-                .name(role.getName())
-                .description(role.getDescription())
-                .system(role.getSystem())
-                .active(role.getActive())
-                .modules(modules)
-                .createdAt(role.getCreatedAt())
-                .updatedAt(role.getUpdatedAt())
-                .build();
-    }
+		return RoleDetailResponse.builder().id(role.getId()).code(role.getCode()).name(role.getName())
+				.description(role.getDescription()).system(role.getSystem()).active(role.getActive()).modules(modules)
+				.createdAt(role.getCreatedAt()).updatedAt(role.getUpdatedAt()).build();
+	}
 }

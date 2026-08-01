@@ -18,34 +18,19 @@ import site.ethosylar.pos.common.entity.TimestampedEntity;
 @Table(name = "lt_audit_actions_aa")
 public class AuditActionEntity extends TimestampedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(
-        name = "code",
-        nullable = false,
-        length = 100,
-        unique = true
-    )
-    private String code;
+	@Column(name = "code", nullable = false, length = 100, unique = true)
+	private String code;
 
-    @Column(
-        name = "name",
-        nullable = false,
-        length = 150
-    )
-    private String name;
+	@Column(name = "name", nullable = false, length = 150)
+	private String name;
 
-    @Column(
-        name = "description",
-        length = 500
-    )
-    private String description;
+	@Column(name = "description", length = 500)
+	private String description;
 
-    @Column(
-        name = "is_active",
-        nullable = false
-    )
-    private Boolean active = true;
+	@Column(name = "is_active", nullable = false)
+	private Boolean active = true;
 }

@@ -18,63 +18,30 @@ import site.ethosylar.pos.user.repository.UserRoleRepository;
 
 @Service
 @RequiredArgsConstructor
-public class DatabaseUserDetailsService
-        implements UserDetailsService {
+public class DatabaseUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
+	private final UserRepository userRepository;
+	private final UserRoleRepository userRoleRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(
-            String username)
-            throws UsernameNotFoundException {
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserEntity user =
-                userRepository
-                    .findByUsernameIgnoreCase(username)
-                    .orElseThrow(() ->
-                        new UsernameNotFoundException(
-                            "User not found."
-                        )
-                    );
+		UserEntity user = userRepository.findByUsernameIgnoreCase(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-        String statusCode =
-                user.getStatus().getCode();
+		String statusCode = user.getStatus().getCode();
 
-        boolean active =
-                "ACTIVE".equalsIgnoreCase(statusCode);
+		boolean active = "ACTIVE".equalsIgnoreCase(statusCode);
 
-        boolean locked =
-                "LOCKED".equalsIgnoreCase(statusCode);
+		boolean locked = "LOCKED".equalsIgnoreCase(statusCode);
 
-        List<GrantedAuthority> authorities =
-                userRoleRepository
-                    .findByUser_Id(user.getId())
-                    .stream()
-                    .filter(userRole ->
-                        Boolean.TRUE.equals(
-                            userRole
-                                .getRole()
-                                .getActive()
-                        )
-                    )
-                    .map(userRole ->
-                        new SimpleGrantedAuthority(
-                            "ROLE_"
-                            + userRole
-                                .getRole()
-                                .getCode()
-                        )
-                    )
-                    .map(GrantedAuthority.class::cast)
-                    .toList();
+		List<GrantedAuthority> authorities = userRoleRepository.findByUser_Id(user.getId()).stream()
+				.filter(userRole -> Boolean.TRUE.equals(userRole.getRole().getActive()))
+				.map(userRole -> new SimpleGrantedAuthority("ROLE_" + userRole.getRole().getCode()))
+				.map(GrantedAuthority.class::cast).toList();
 
-        return User.withUsername(user.getUsername())
-                .password(user.getPasswordHash())
-                .authorities(authorities)
-                .disabled(!active)
-                .accountLocked(locked)
-                .build();
-    }
+		return User.withUsername(user.getUsername()).password(user.getPasswordHash()).authorities(authorities)
+				.disabled(!active).accountLocked(locked).build();
+	}
 }

@@ -20,65 +20,35 @@ import site.ethosylar.pos.security.handler.RestAuthenticationEntryPoint;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            RestAuthenticationEntryPoint authenticationEntryPoint,
-            RestAccessDeniedHandler accessDeniedHandler)
-            throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http, RestAuthenticationEntryPoint authenticationEntryPoint,
+			RestAccessDeniedHandler accessDeniedHandler) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
+		http.csrf(csrf -> csrf.disable())
 
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(
-                    SessionCreationPolicy.STATELESS
-                )
-            )
-            
-            .exceptionHandling(exception ->
-	            exception
-	                .authenticationEntryPoint(
-	                    authenticationEntryPoint
-	                )
-	                .accessDeniedHandler(
-	                    accessDeniedHandler
-	                )
-	        )
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            .authorizeHttpRequests(authorize ->
-                authorize
-                    .requestMatchers(
-                        "/api/auth/login",
-                        "/actuator/health"
-                    )
-                    .permitAll()
+				.exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)
+						.accessDeniedHandler(accessDeniedHandler))
 
-                    .anyRequest()
-                    .authenticated()
-            )
+				.authorizeHttpRequests(
+						authorize -> authorize.requestMatchers("/api/auth/login", "/actuator/health").permitAll()
 
-            .oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(Customizer.withDefaults())
-            );
+								.anyRequest().authenticated())
 
-        return http.build();
-    }
+				.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
-    @Bean
-    AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+		return http.build();
+	}
 
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(
-                    userDetailsService
-                );
+	@Bean
+	AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
+			PasswordEncoder passwordEncoder) {
 
-        provider.setPasswordEncoder(
-                passwordEncoder
-        );
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
-        return new ProviderManager(provider);
-    }
+		provider.setPasswordEncoder(passwordEncoder);
+
+		return new ProviderManager(provider);
+	}
 }
