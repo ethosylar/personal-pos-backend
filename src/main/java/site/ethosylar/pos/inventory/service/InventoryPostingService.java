@@ -68,4 +68,42 @@ public class InventoryPostingService {
 
 		return movementRepository.save(movement);
 	}
+
+	public InventoryMovementEntity recordSaleUsage(Long ingredientId, BigDecimal quantity, BigDecimal unitCost,
+			OffsetDateTime occurredAt, Long saleItemId, String saleNumber, UserEntity user) {
+
+		IngredientEntity ingredient = ingredientRepository.findByIdForUpdate(ingredientId)
+				.orElseThrow(() -> new ResourceNotFoundException("Ingredient not found."));
+
+		InventoryMovementTypeEntity type = movementTypeRepository.findByCodeIgnoreCase("SALE_USAGE")
+				.orElseThrow(() -> new ResourceNotFoundException("SALE_USAGE movement type not found."));
+
+		boolean exists = movementRepository
+				.existsByReferenceTypeIgnoreCaseAndReferenceIdAndIngredient_IdAndMovementType_Id("SALE_ITEM",
+						saleItemId, ingredientId, type.getId());
+
+		if (exists) {
+			throw new DuplicateResourceException("Sale ingredient usage has already been posted.");
+		}
+
+		InventoryMovementEntity movement = new InventoryMovementEntity();
+
+		movement.setIngredient(ingredient);
+		movement.setMovementType(type);
+
+		movement.setQuantity(quantity);
+		movement.setUnitCost(unitCost);
+
+		movement.setOccurredAt(occurredAt);
+
+		movement.setReferenceType("SALE_ITEM");
+		movement.setReferenceId(saleItemId);
+		movement.setReferenceNo(saleNumber);
+
+		movement.setReason("POS sale consumption");
+
+		movement.setCreatedByUser(user);
+
+		return movementRepository.save(movement);
+	}
 }
