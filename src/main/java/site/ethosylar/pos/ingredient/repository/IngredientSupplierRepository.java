@@ -16,4 +16,6 @@ public interface IngredientSupplierRepository extends JpaRepository<IngredientSu
 	boolean existsByIngredient_IdAndSupplier_Id(Long ingredientId, Long supplierId);
 
 	Optional<IngredientSupplierEntity> findByIdAndIngredient_Id(Long id, Long ingredientId);
+
+	Optional<IngredientSupplierEntity> findFirstByIngredient_IdAndPreferredTrueAndActiveTrue(Long ingredientId);
 }
