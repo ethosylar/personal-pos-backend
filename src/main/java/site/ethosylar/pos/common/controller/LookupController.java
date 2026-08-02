@@ -16,6 +16,8 @@ import site.ethosylar.pos.module.response.ModuleResponse;
 import site.ethosylar.pos.module.service.ModuleService;
 import site.ethosylar.pos.permission.response.ModulePermissionResponse;
 import site.ethosylar.pos.permission.service.ModulePermissionService;
+import site.ethosylar.pos.unit.response.UnitOfMeasureResponse;
+import site.ethosylar.pos.unit.service.UnitOfMeasureService;
 import site.ethosylar.pos.user.response.UserStatusResponse;
 import site.ethosylar.pos.user.service.UserStatusService;
 
@@ -31,6 +33,8 @@ public class LookupController {
 	private final ModulePermissionService modulePermissionService;
 
 	private final AuditActionService auditActionService;
+
+	private final UnitOfMeasureService unitOfMeasureService;
 
 	@GetMapping("/user-statuses")
 	public ResponseEntity<List<UserStatusResponse>> getUserStatuses() {
@@ -55,5 +59,11 @@ public class LookupController {
 	public ResponseEntity<List<AuditActionLookupResponse>> getAuditActions() {
 
 		return ResponseEntity.ok(auditActionService.getActiveActions());
+	}
+
+	@GetMapping("/units")
+	public ResponseEntity<List<UnitOfMeasureResponse>> getUnits() {
+
+		return ResponseEntity.ok(unitOfMeasureService.getActiveUnits());
 	}
 }
