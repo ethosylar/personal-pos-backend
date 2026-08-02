@@ -75,6 +75,17 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\service\ModulePermissionService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\service\PermissionService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\PersonalPosBackendApplication.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\controller\ProductController.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\entity\ProductEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\mapper\ProductMapper.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\repository\ProductRepository.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\request\ChangeProductAvailabilityRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\request\ChangeProductPriceRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\request\CreateProductRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\request\ProductFilterRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\request\UpdateProductRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\response\ProductResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\service\ProductService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\controller\RoleController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\entity\RoleEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\role\entity\RoleModuleEntity.java

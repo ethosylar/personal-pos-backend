@@ -2,6 +2,7 @@ site\ethosylar\pos\unit\response\UnitOfMeasureResponse$UnitOfMeasureResponseBuil
 site\ethosylar\pos\role\response\RoleResponse$RoleResponseBuilder.class
 site\ethosylar\pos\audit\mapper\AuditLogMapper.class
 site\ethosylar\pos\audit\request\AuditLogRequest.class
+site\ethosylar\pos\product\request\ChangeProductPriceRequest.class
 site\ethosylar\pos\common\exception\ResourceNotFoundException.class
 site\ethosylar\pos\ingredient\response\IngredientSummaryResponse.class
 site\ethosylar\pos\user\repository\UserRoleRepository.class
@@ -9,6 +10,7 @@ site\ethosylar\pos\ingredient\response\IngredientDetailResponse$IngredientDetail
 site\ethosylar\pos\audit\request\AuditLogRequest$AuditLogRequestBuilder.class
 site\ethosylar\pos\common\response\PageResponse.class
 site\ethosylar\pos\ingredient\response\IngredientSupplierResponse$IngredientSupplierResponseBuilder.class
+site\ethosylar\pos\product\controller\ProductController.class
 site\ethosylar\pos\category\response\CategoryResponse$CategoryResponseBuilder.class
 site\ethosylar\pos\auth\controller\AuthController.class
 site\ethosylar\pos\ingredient\mapper\IngredientMapper.class
@@ -31,9 +33,11 @@ site\ethosylar\pos\audit\response\AuditActionResponse$AuditActionResponseBuilder
 site\ethosylar\pos\ingredient\service\IngredientService.class
 site\ethosylar\pos\audit\entity\AuditLogEntity.class
 site\ethosylar\pos\category\controller\CategoryController.class
+site\ethosylar\pos\product\request\ProductFilterRequest.class
 site\ethosylar\pos\audit\service\AuditActionService.class
 site\ethosylar\pos\auth\request\LoginRequest.class
 site\ethosylar\pos\ingredient\request\CreateIngredientRequest.class
+site\ethosylar\pos\product\entity\ProductEntity.class
 site\ethosylar\pos\auth\bootstrap\AdminBootstrapInitializer.class
 site\ethosylar\pos\module\entity\ModuleEntity.class
 site\ethosylar\pos\category\repository\ProductCategoryRepository.class
@@ -42,12 +46,14 @@ site\ethosylar\pos\permission\repository\ModulePermissionRepository.class
 site\ethosylar\pos\category\service\ProductCategoryService.class
 site\ethosylar\pos\role\response\RoleModuleResponse$RoleModuleResponseBuilder.class
 site\ethosylar\pos\audit\controller\AuditLogController.class
+site\ethosylar\pos\product\response\ProductResponse$ProductResponseBuilder.class
 site\ethosylar\pos\config\PasswordConfig.class
 site\ethosylar\pos\unit\repository\UnitOfMeasureRepository.class
 site\ethosylar\pos\role\response\RoleModuleResponse.class
 site\ethosylar\pos\audit\service\AuditLogQueryService.class
 site\ethosylar\pos\audit\service\AuditService.class
 site\ethosylar\pos\ingredient\controller\IngredientController.class
+site\ethosylar\pos\product\mapper\ProductMapper.class
 site\ethosylar\pos\common\controller\LookupController.class
 site\ethosylar\pos\common\exception\GlobalExceptionHandler.class
 site\ethosylar\pos\security\jwt\JwtTokenService.class
@@ -56,6 +62,7 @@ site\ethosylar\pos\permission\entity\ModulePermissionEntity.class
 site\ethosylar\pos\role\mapper\RoleMapper.class
 site\ethosylar\pos\auth\response\LoginResponse.class
 site\ethosylar\pos\user\controller\UserController.class
+site\ethosylar\pos\product\request\UpdateProductRequest.class
 site\ethosylar\pos\user\mapper\UserMapper.class
 site\ethosylar\pos\role\response\RoleDetailResponse$RoleDetailResponseBuilder.class
 site\ethosylar\pos\common\response\ApiErrorResponse$ApiErrorResponseBuilder.class
@@ -66,6 +73,7 @@ site\ethosylar\pos\supplier\repository\SupplierRepository.class
 site\ethosylar\pos\security\handler\RestAccessDeniedHandler.class
 site\ethosylar\pos\user\repository\UserRepository.class
 site\ethosylar\pos\user\response\UserResponse.class
+site\ethosylar\pos\product\request\ChangeProductAvailabilityRequest.class
 site\ethosylar\pos\audit\request\AuditLogFilterRequest.class
 site\ethosylar\pos\ingredient\request\IngredientFilterRequest.class
 site\ethosylar\pos\common\response\ApiErrorResponse.class
@@ -81,6 +89,7 @@ site\ethosylar\pos\permission\entity\RoleModulePermissionEntity.class
 site\ethosylar\pos\audit\response\AuditActionResponse.class
 site\ethosylar\pos\supplier\mapper\SupplierMapper.class
 site\ethosylar\pos\ingredient\request\CreateIngredientSupplierRequest.class
+site\ethosylar\pos\product\request\CreateProductRequest.class
 site\ethosylar\pos\user\response\UserRoleResponse$UserRoleResponseBuilder.class
 site\ethosylar\pos\audit\response\AuditLogResponse.class
 site\ethosylar\pos\common\exception\DuplicateResourceException.class
@@ -106,6 +115,7 @@ site\ethosylar\pos\user\repository\UserStatusRepository.class
 site\ethosylar\pos\auth\service\AuthService.class
 site\ethosylar\pos\unit\response\UnitOfMeasureResponse.class
 site\ethosylar\pos\config\SecurityConfig.class
+site\ethosylar\pos\product\repository\ProductRepository.class
 site\ethosylar\pos\role\request\UpdateRoleRequest.class
 site\ethosylar\pos\user\response\UserDetailResponse$UserDetailResponseBuilder.class
 site\ethosylar\pos\user\entity\UserStatusEntity.class
@@ -114,6 +124,7 @@ site\ethosylar\pos\unit\service\UnitOfMeasureService.class
 site\ethosylar\pos\role\request\AssignModulePermissionsRequest.class
 site\ethosylar\pos\user\response\UserResponse$UserResponseBuilder.class
 site\ethosylar\pos\auth\response\LoginResponse$LoginResponseBuilder.class
+site\ethosylar\pos\product\service\ProductService.class
 site\ethosylar\pos\module\response\ModuleResponse$ModuleResponseBuilder.class
 site\ethosylar\pos\audit\response\AuditActorResponse.class
 site\ethosylar\pos\category\response\CategoryResponse.class
@@ -147,6 +158,7 @@ site\ethosylar\pos\user\request\ChangeUserStatusRequest.class
 site\ethosylar\pos\user\response\UserDetailResponse.class
 site\ethosylar\pos\user\response\UserStatusResponse.class
 site\ethosylar\pos\ingredient\entity\IngredientEntity.class
+site\ethosylar\pos\product\response\ProductResponse.class
 site\ethosylar\pos\category\entity\IngredientCategoryEntity.class
 site\ethosylar\pos\role\service\RoleService.class
 site\ethosylar\pos\permission\repository\RoleModulePermissionRepository.class
