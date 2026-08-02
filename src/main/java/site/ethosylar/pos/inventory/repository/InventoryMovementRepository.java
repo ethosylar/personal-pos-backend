@@ -28,4 +28,7 @@ public interface InventoryMovementRepository
 	BigDecimal calculateCurrentStock(@Param("ingredientId") Long ingredientId);
 
 	boolean existsByIngredient_Id(Long ingredientId);
+
+	boolean existsByReferenceTypeIgnoreCaseAndReferenceIdAndIngredient_IdAndMovementType_Id(String referenceType,
+			Long referenceId, Long ingredientId, Long movementTypeId);
 }
