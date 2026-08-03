@@ -1,6 +1,7 @@
 package site.ethosylar.pos.inventory.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -31,4 +32,7 @@ public interface InventoryMovementRepository
 
 	boolean existsByReferenceTypeIgnoreCaseAndReferenceIdAndIngredient_IdAndMovementType_Id(String referenceType,
 			Long referenceId, Long ingredientId, Long movementTypeId);
+
+	List<InventoryMovementEntity> findByReferenceTypeIgnoreCaseAndReferenceIdAndMovementType_CodeIgnoreCaseOrderByIdAsc(
+			String referenceType, Long referenceId, String movementTypeCode);
 }

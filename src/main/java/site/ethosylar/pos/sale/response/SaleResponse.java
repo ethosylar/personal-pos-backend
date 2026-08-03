@@ -47,4 +47,12 @@ public class SaleResponse {
 	private OffsetDateTime createdAt;
 
 	private OffsetDateTime updatedAt;
+
+	private OffsetDateTime voidedAt;
+
+	private Long voidedByUserId;
+
+	private String voidedByUsername;
+
+	private String voidReason;
 }

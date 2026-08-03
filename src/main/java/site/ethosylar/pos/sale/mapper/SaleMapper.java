@@ -10,6 +10,7 @@ import site.ethosylar.pos.sale.entity.SaleEntity;
 import site.ethosylar.pos.sale.entity.SaleItemEntity;
 import site.ethosylar.pos.sale.response.SaleItemResponse;
 import site.ethosylar.pos.sale.response.SaleResponse;
+import site.ethosylar.pos.sale.response.SaleSummaryResponse;
 
 @Component
 public class SaleMapper {
@@ -111,6 +112,51 @@ public class SaleMapper {
 				.createdAt(sale.getCreatedAt())
 
 				.updatedAt(sale.getUpdatedAt())
+
+				.voidedAt(sale.getVoidedAt())
+
+				.voidedByUserId(sale.getVoidedByUser() != null ? sale.getVoidedByUser().getId() : null)
+
+				.voidedByUsername(sale.getVoidedByUser() != null ? sale.getVoidedByUser().getUsername() : null)
+
+				.voidReason(sale.getVoidReason())
+
+				.build();
+	}
+
+	public SaleSummaryResponse toSummaryResponse(SaleEntity sale) {
+
+		return SaleSummaryResponse.builder().id(sale.getId())
+
+				.saleNumber(sale.getSaleNumber())
+
+				.statusCode(sale.getStatus().getCode())
+
+				.statusName(sale.getStatus().getName())
+
+				.cashierUserId(sale.getCashierUser() != null ? sale.getCashierUser().getId() : null)
+
+				.cashierUsername(sale.getCashierUser() != null ? sale.getCashierUser().getUsername() : null)
+
+				.soldAt(sale.getSoldAt())
+
+				.subtotal(sale.getSubtotal())
+
+				.discountAmount(sale.getDiscountAmount())
+
+				.taxAmount(sale.getTaxAmount())
+
+				.totalAmount(sale.getTotalAmount())
+
+				.totalCostSnapshot(sale.getTotalCostSnapshot())
+
+				.grossProfitSnapshot(sale.getGrossProfitSnapshot())
+
+				.voidedAt(sale.getVoidedAt())
+
+				.voidReason(sale.getVoidReason())
+
+				.createdAt(sale.getCreatedAt())
 
 				.build();
 	}

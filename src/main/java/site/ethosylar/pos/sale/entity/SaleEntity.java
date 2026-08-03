@@ -63,4 +63,14 @@ public class SaleEntity extends TimestampedEntity {
 
 	@Column(name = "notes", length = 1000)
 	private String notes;
+
+	@Column(name = "voided_at")
+	private OffsetDateTime voidedAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "voided_by_user_id")
+	private UserEntity voidedByUser;
+
+	@Column(name = "void_reason", length = 500)
+	private String voidReason;
 }
