@@ -106,4 +106,51 @@ public class InventoryPostingService {
 
 		return movementRepository.save(movement);
 	}
+
+	public InventoryMovementEntity recordSaleReversal(Long ingredientId, BigDecimal quantity, BigDecimal unitCost,
+			OffsetDateTime occurredAt, Long saleItemId, String saleNumber, UserEntity user) {
+
+		IngredientEntity ingredient = ingredientRepository.findByIdForUpdate(ingredientId)
+				.orElseThrow(() -> new ResourceNotFoundException("Ingredient not found."));
+
+		InventoryMovementTypeEntity type = movementTypeRepository.findByCodeIgnoreCase("SALE_REVERSAL")
+				.orElseThrow(() -> new ResourceNotFoundException("SALE_REVERSAL movement type not found."));
+
+		boolean alreadyPosted = movementRepository
+				.existsByReferenceTypeIgnoreCaseAndReferenceIdAndIngredient_IdAndMovementType_Id("SALE_ITEM_VOID",
+						saleItemId, ingredientId, type.getId());
+
+		if (alreadyPosted) {
+
+			throw new DuplicateResourceException("Sale item inventory reversal has already been posted.");
+		}
+
+		InventoryMovementEntity movement = new InventoryMovementEntity();
+
+		movement.setIngredient(ingredient);
+		movement.setMovementType(type);
+
+		/*
+		 * Quantity remains POSITIVE.
+		 *
+		 * SALE_REVERSAL direction = +1.
+		 */
+		movement.setQuantity(quantity);
+
+		movement.setUnitCost(unitCost);
+
+		movement.setOccurredAt(occurredAt);
+
+		movement.setReferenceType("SALE_ITEM_VOID");
+
+		movement.setReferenceId(saleItemId);
+
+		movement.setReferenceNo(saleNumber);
+
+		movement.setReason("Voided POS sale inventory reversal");
+
+		movement.setCreatedByUser(user);
+
+		return movementRepository.save(movement);
+	}
 }

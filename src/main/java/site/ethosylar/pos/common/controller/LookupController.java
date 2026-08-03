@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.response.AuditActionLookupResponse;
 import site.ethosylar.pos.audit.service.AuditActionService;
+import site.ethosylar.pos.expense.response.ExpenseCategoryResponse;
+import site.ethosylar.pos.expense.service.ExpenseLookupService;
 import site.ethosylar.pos.module.response.ModuleResponse;
 import site.ethosylar.pos.module.service.ModuleService;
 import site.ethosylar.pos.permission.response.ModulePermissionResponse;
@@ -35,6 +37,8 @@ public class LookupController {
 	private final AuditActionService auditActionService;
 
 	private final UnitOfMeasureService unitOfMeasureService;
+
+	private final ExpenseLookupService expenseLookupService;
 
 	@GetMapping("/user-statuses")
 	public ResponseEntity<List<UserStatusResponse>> getUserStatuses() {
@@ -65,5 +69,12 @@ public class LookupController {
 	public ResponseEntity<List<UnitOfMeasureResponse>> getUnits() {
 
 		return ResponseEntity.ok(unitOfMeasureService.getActiveUnits());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'VIEW')")
+	@GetMapping("/expense-categories")
+	public ResponseEntity<List<ExpenseCategoryResponse>> getExpenseCategories() {
+
+		return ResponseEntity.ok(expenseLookupService.getActiveCategories());
 	}
 }
