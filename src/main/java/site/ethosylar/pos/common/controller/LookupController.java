@@ -18,6 +18,8 @@ import site.ethosylar.pos.module.response.ModuleResponse;
 import site.ethosylar.pos.module.service.ModuleService;
 import site.ethosylar.pos.permission.response.ModulePermissionResponse;
 import site.ethosylar.pos.permission.service.ModulePermissionService;
+import site.ethosylar.pos.staff.response.StaffLookupResponse;
+import site.ethosylar.pos.staff.service.StaffLookupService;
 import site.ethosylar.pos.unit.response.UnitOfMeasureResponse;
 import site.ethosylar.pos.unit.service.UnitOfMeasureService;
 import site.ethosylar.pos.user.response.UserStatusResponse;
@@ -39,6 +41,8 @@ public class LookupController {
 	private final UnitOfMeasureService unitOfMeasureService;
 
 	private final ExpenseLookupService expenseLookupService;
+
+	private final StaffLookupService staffLookupService;
 
 	@GetMapping("/user-statuses")
 	public ResponseEntity<List<UserStatusResponse>> getUserStatuses() {
@@ -76,5 +80,19 @@ public class LookupController {
 	public ResponseEntity<List<ExpenseCategoryResponse>> getExpenseCategories() {
 
 		return ResponseEntity.ok(expenseLookupService.getActiveCategories());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'STAFF', 'VIEW')")
+	@GetMapping("/staff-statuses")
+	public ResponseEntity<List<StaffLookupResponse>> getStaffStatuses() {
+
+		return ResponseEntity.ok(staffLookupService.getStatuses());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'STAFF', 'VIEW')")
+	@GetMapping("/salary-pay-types")
+	public ResponseEntity<List<StaffLookupResponse>> getSalaryPayTypes() {
+
+		return ResponseEntity.ok(staffLookupService.getPayTypes());
 	}
 }
