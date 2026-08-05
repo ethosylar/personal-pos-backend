@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.accounting.service.AccountingPeriodService;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
@@ -22,6 +23,7 @@ import site.ethosylar.pos.payment.entity.PaymentEntity;
 import site.ethosylar.pos.payment.entity.PaymentStatusEntity;
 import site.ethosylar.pos.payment.repository.PaymentRepository;
 import site.ethosylar.pos.payment.repository.PaymentStatusRepository;
+import site.ethosylar.pos.payment.response.PaymentResponse;
 import site.ethosylar.pos.sale.entity.SaleEntity;
 import site.ethosylar.pos.sale.entity.SaleItemEntity;
 import site.ethosylar.pos.sale.entity.SaleStatusEntity;
@@ -32,7 +34,6 @@ import site.ethosylar.pos.sale.repository.SaleStatusRepository;
 import site.ethosylar.pos.sale.request.VoidSaleRequest;
 import site.ethosylar.pos.sale.response.SaleItemResponse;
 import site.ethosylar.pos.sale.response.SaleResponse;
-import site.ethosylar.pos.payment.response.PaymentResponse;
 import site.ethosylar.pos.user.entity.UserEntity;
 import site.ethosylar.pos.user.repository.UserRepository;
 
@@ -58,6 +59,8 @@ public class SaleVoidService {
 
 	private final AuditService auditService;
 
+	private final AccountingPeriodService accountingPeriodService;
+
 	public SaleResponse voidSale(Long saleId, VoidSaleRequest request) {
 
 		SaleEntity sale = saleRepository.findByIdForUpdate(saleId)
@@ -67,6 +70,13 @@ public class SaleVoidService {
 
 			throw new BusinessRuleException("Only completed sales can be voided.");
 		}
+
+		if (sale.getSoldAt() == null) {
+
+			throw new BusinessRuleException("Completed sale has no sold timestamp.");
+		}
+
+		accountingPeriodService.ensureOpen(sale.getSoldAt());
 
 		Map<String, Object> before = snapshot(sale);
 

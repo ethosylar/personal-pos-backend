@@ -28,4 +28,7 @@ public interface MonthlyAccountingRepository
 			WHERE a.id = :id
 			""")
 	Optional<MonthlyAccountingEntity> findByIdForUpdate(@Param("id") Long id);
+
+	boolean existsByPeriodYearAndPeriodMonthAndCurrentRecordTrueAndStatus_CodeIgnoreCase(Short periodYear,
+			Short periodMonth, String statusCode);
 }

@@ -235,6 +235,7 @@ site\ethosylar\pos\staff\entity\SalaryPayTypeEntity.class
 site\ethosylar\pos\ingredient\repository\IngredientSupplierRepository.class
 site\ethosylar\pos\procurement\request\CreatePurchaseOrderRequest.class
 site\ethosylar\pos\ingredient\response\IngredientDetailResponse.class
+site\ethosylar\pos\accounting\service\AccountingPeriodService.class
 site\ethosylar\pos\audit\entity\AuditActionEntity.class
 site\ethosylar\pos\category\request\CreateCategoryRequest.class
 site\ethosylar\pos\expense\controller\ExpenseController.class

@@ -3,8 +3,8 @@ package site.ethosylar.pos.payroll.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.OffsetDateTime;
+import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.accounting.service.AccountingPeriodService;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
@@ -31,7 +32,6 @@ import site.ethosylar.pos.payroll.request.VoidStaffMonthlyCostRequest;
 import site.ethosylar.pos.payroll.response.StaffMonthlyCostResponse;
 import site.ethosylar.pos.staff.entity.StaffEntity;
 import site.ethosylar.pos.staff.entity.StaffSalaryRateEntity;
-import site.ethosylar.pos.staff.entity.StaffStatusEntity;
 import site.ethosylar.pos.staff.repository.StaffRepository;
 import site.ethosylar.pos.staff.repository.StaffSalaryRateRepository;
 import site.ethosylar.pos.user.entity.UserEntity;
@@ -57,6 +57,8 @@ public class StaffMonthlyCostService {
 	private final PayrollMapper payrollMapper;
 
 	private final AuditService auditService;
+
+	private final AccountingPeriodService accountingPeriodService;
 
 	public StaffMonthlyCostResponse create(CreateStaffMonthlyCostRequest request) {
 
@@ -337,6 +339,10 @@ public class StaffMonthlyCostService {
 
 		ensureDraft(cost);
 
+		YearMonth period = YearMonth.of(cost.getPeriodYear().intValue(), cost.getPeriodMonth().intValue());
+
+		accountingPeriodService.ensureOpen(period);
+
 		Map<String, Object> before = snapshot(cost);
 
 		UserEntity user = getCurrentUser();
@@ -364,6 +370,10 @@ public class StaffMonthlyCostService {
 
 			throw new BusinessRuleException("Only posted payroll records can be voided.");
 		}
+
+		YearMonth period = YearMonth.of(cost.getPeriodYear().intValue(), cost.getPeriodMonth().intValue());
+
+		accountingPeriodService.ensureOpen(period);
 
 		Map<String, Object> before = snapshot(cost);
 
