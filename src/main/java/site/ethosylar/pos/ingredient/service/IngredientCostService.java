@@ -28,4 +28,22 @@ public class IngredientCostService {
 
 		return supplier.getPurchasePrice().divide(supplier.getBaseQuantity(), 6, RoundingMode.HALF_UP);
 	}
+
+	public BigDecimal getCurrentUnitCostOrZero(Long ingredientId) {
+
+		return findCurrentUnitCost(ingredientId).orElse(BigDecimal.ZERO);
+	}
+
+	public Optional<BigDecimal> findCurrentUnitCost(Long ingredientId) {
+
+		return ingredientSupplierRepository.findFirstByIngredient_IdAndPreferredTrueAndActiveTrue(ingredientId)
+				.filter(option -> option.getPurchasePrice() != null && option.getBaseQuantity() != null
+						&& option.getBaseQuantity().compareTo(BigDecimal.ZERO) > 0)
+				.map(option -> option.getPurchasePrice().divide(option.getBaseQuantity(), 6, RoundingMode.HALF_UP));
+	}
+
+	public BigDecimal getCurrentUnitCost(Long ingredientId) {
+
+		return findCurrentUnitCost(ingredientId).orElse(BigDecimal.ZERO);
+	}
 }

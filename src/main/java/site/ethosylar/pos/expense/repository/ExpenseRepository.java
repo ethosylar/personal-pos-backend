@@ -1,5 +1,7 @@
 package site.ethosylar.pos.expense.repository;
 
+import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +24,15 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long>, J
 			WHERE e.id = :id
 			""")
 	Optional<ExpenseEntity> findByIdForUpdate(@Param("id") Long id);
+
+	long countByStatus_CodeIgnoreCaseAndExpenseDateBetween(String statusCode, LocalDate fromDate, LocalDate toDate);
+
+	@Query("""
+			SELECT COALESCE(SUM(e.totalAmount), 0)
+			FROM ExpenseEntity e
+			WHERE UPPER(e.status.code) = UPPER(:statusCode)
+			  AND e.expenseDate BETWEEN :fromDate AND :toDate
+			""")
+	BigDecimal calculatePostedExpenses(@Param("statusCode") String statusCode, @Param("fromDate") LocalDate fromDate,
+			@Param("toDate") LocalDate toDate);
 }

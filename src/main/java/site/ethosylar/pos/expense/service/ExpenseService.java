@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.accounting.service.AccountingPeriodService;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
@@ -52,6 +53,8 @@ public class ExpenseService {
 	private final ExpenseMapper expenseMapper;
 
 	private final AuditService auditService;
+
+	private final AccountingPeriodService accountingPeriodService;
 
 	public ExpenseResponse create(CreateExpenseRequest request) {
 
@@ -147,6 +150,8 @@ public class ExpenseService {
 
 		ensureDraft(expense);
 
+		accountingPeriodService.ensureOpen(expense.getExpenseDate());
+
 		Map<String, Object> before = snapshot(expense);
 
 		UserEntity currentUser = getCurrentUser();
@@ -174,6 +179,8 @@ public class ExpenseService {
 
 			throw new BusinessRuleException("Only posted expenses can be voided.");
 		}
+
+		accountingPeriodService.ensureOpen(expense.getExpenseDate());
 
 		Map<String, Object> before = snapshot(expense);
 

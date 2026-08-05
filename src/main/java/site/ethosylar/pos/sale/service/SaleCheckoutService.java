@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.accounting.service.AccountingPeriodService;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
@@ -76,6 +77,8 @@ public class SaleCheckoutService {
 	private final SaleMapper saleMapper;
 
 	private final AuditService auditService;
+
+	private final AccountingPeriodService accountingPeriodService;
 
 	public SaleResponse complete(Long saleId, CompleteSaleRequest request) {
 
@@ -199,6 +202,8 @@ public class SaleCheckoutService {
 		}
 
 		OffsetDateTime completedAt = OffsetDateTime.now();
+		
+		accountingPeriodService.ensureOpen(completedAt);
 
 		UserEntity cashier = getCurrentUser();
 
