@@ -59,6 +59,13 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\response\PageResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\PasswordConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\SecurityConfig.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\controller\DashboardController.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\projection\MonthlySalesProjection.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\projection\TopProductProjection.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\response\DashboardSummaryResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\response\MonthlySalesTrendResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\response\TopProductResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\service\DashboardService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\expense\controller\ExpenseController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\expense\entity\ExpenseCategoryEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\expense\entity\ExpenseEntity.java
