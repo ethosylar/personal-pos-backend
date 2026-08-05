@@ -20,9 +20,16 @@ import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.dashboard.projection.MonthlySalesProjection;
 import site.ethosylar.pos.dashboard.projection.TopProductProjection;
 import site.ethosylar.pos.dashboard.response.DashboardSummaryResponse;
+import site.ethosylar.pos.dashboard.response.InventoryStockAlertResponse;
+import site.ethosylar.pos.dashboard.response.InventorySummaryResponse;
 import site.ethosylar.pos.dashboard.response.MonthlySalesTrendResponse;
+import site.ethosylar.pos.dashboard.response.RecentInventoryMovementResponse;
 import site.ethosylar.pos.dashboard.response.TopProductResponse;
 import site.ethosylar.pos.expense.repository.ExpenseRepository;
+import site.ethosylar.pos.ingredient.service.IngredientCostService;
+import site.ethosylar.pos.inventory.projection.InventoryStockProjection;
+import site.ethosylar.pos.inventory.projection.RecentInventoryMovementProjection;
+import site.ethosylar.pos.inventory.repository.InventoryMovementRepository;
 import site.ethosylar.pos.payroll.repository.StaffMonthlyCostRepository;
 import site.ethosylar.pos.sale.repository.SaleItemRepository;
 import site.ethosylar.pos.sale.repository.SaleRepository;
@@ -41,6 +48,10 @@ public class DashboardService {
 	private final ExpenseRepository expenseRepository;
 
 	private final StaffMonthlyCostRepository payrollRepository;
+
+	private final InventoryMovementRepository inventoryMovementRepository;
+
+	private final IngredientCostService ingredientCostService;
 
 	public DashboardSummaryResponse getSummary(LocalDate requestedDate) {
 
@@ -246,6 +257,258 @@ public class DashboardService {
 				.cogs(cost(row.getCogs()))
 
 				.grossProfit(cost(row.getGrossProfit()))
+
+				.build();
+	}
+
+	private String determineStockStatus(InventoryStockProjection stock) {
+
+		/*
+		 * No configured stock policy.
+		 */
+		if (!Boolean.TRUE.equals(stock.getAlertEnabled())) {
+
+			return "UNCONFIGURED";
+		}
+
+		BigDecimal currentStock = zero(stock.getCurrentStock());
+
+		BigDecimal reorderLevel = zero(stock.getReorderLevel());
+
+		if (currentStock.compareTo(BigDecimal.ZERO) <= 0) {
+
+			return "OUT_OF_STOCK";
+		}
+
+		if (currentStock.compareTo(reorderLevel) <= 0) {
+
+			return "LOW_STOCK";
+		}
+
+		return "HEALTHY";
+	}
+
+	private BigDecimal calculateSuggestedReorder(InventoryStockProjection stock) {
+
+		if (!Boolean.TRUE.equals(stock.getAlertEnabled())) {
+
+			return BigDecimal.ZERO;
+		}
+
+		BigDecimal target = stock.getTargetStockLevel();
+
+		if (target == null) {
+			return BigDecimal.ZERO;
+		}
+
+		BigDecimal current = zero(stock.getCurrentStock());
+
+		BigDecimal suggested = target.subtract(current);
+
+		if (suggested.compareTo(BigDecimal.ZERO) < 0) {
+
+			return BigDecimal.ZERO;
+		}
+
+		return suggested.setScale(4, RoundingMode.HALF_UP);
+	}
+
+	public InventorySummaryResponse getInventorySummary() {
+
+		List<InventoryStockProjection> stocks = inventoryMovementRepository.findInventoryStockIntelligence();
+
+		int healthy = 0;
+		int low = 0;
+		int out = 0;
+		int unconfigured = 0;
+
+		BigDecimal totalInventoryValue = BigDecimal.ZERO;
+
+		for (InventoryStockProjection stock : stocks) {
+
+			String status = determineStockStatus(stock);
+
+			switch (status) {
+
+			case "HEALTHY":
+				healthy++;
+				break;
+
+			case "LOW_STOCK":
+				low++;
+				break;
+
+			case "OUT_OF_STOCK":
+				out++;
+				break;
+
+			default:
+				unconfigured++;
+				break;
+			}
+
+			BigDecimal currentStock = zero(stock.getCurrentStock());
+
+			/*
+			 * Negative stock should not create negative inventory asset value.
+			 */
+			BigDecimal valuatedStock = currentStock.max(BigDecimal.ZERO);
+
+			BigDecimal unitCost = zero(ingredientCostService.getCurrentUnitCost(stock.getIngredientId()));
+
+			totalInventoryValue = totalInventoryValue.add(valuatedStock.multiply(unitCost));
+		}
+
+		return InventorySummaryResponse.builder()
+
+				.totalIngredients(stocks.size())
+
+				.healthyCount(healthy)
+
+				.lowStockCount(low)
+
+				.outOfStockCount(out)
+
+				.unconfiguredCount(unconfigured)
+
+				.alertCount(low + out)
+
+				.totalInventoryValue(totalInventoryValue.setScale(6, RoundingMode.HALF_UP))
+
+				.build();
+	}
+
+	public List<InventoryStockAlertResponse> getStockAlerts() {
+
+		return inventoryMovementRepository.findInventoryStockIntelligence().stream()
+
+				.filter(stock -> {
+
+					String status = determineStockStatus(stock);
+
+					return "LOW_STOCK".equals(status) || "OUT_OF_STOCK".equals(status);
+				})
+
+				/*
+				 * OUT_OF_STOCK first, then LOW_STOCK.
+				 */
+				.sorted((a, b) -> {
+
+					String statusA = determineStockStatus(a);
+
+					String statusB = determineStockStatus(b);
+
+					int priorityA = "OUT_OF_STOCK".equals(statusA) ? 0 : 1;
+
+					int priorityB = "OUT_OF_STOCK".equals(statusB) ? 0 : 1;
+
+					int compare = Integer.compare(priorityA, priorityB);
+
+					if (compare != 0) {
+						return compare;
+					}
+
+					return zero(a.getCurrentStock()).compareTo(zero(b.getCurrentStock()));
+				})
+
+				.map(this::toInventoryStockResponse)
+
+				.toList();
+	}
+
+	public List<InventoryStockAlertResponse> getInventoryStock() {
+
+		return inventoryMovementRepository.findInventoryStockIntelligence().stream().map(this::toInventoryStockResponse)
+				.toList();
+	}
+
+	private InventoryStockAlertResponse toInventoryStockResponse(InventoryStockProjection stock) {
+
+		BigDecimal currentStock = zero(stock.getCurrentStock()).setScale(4, RoundingMode.HALF_UP);
+
+		BigDecimal unitCost = zero(ingredientCostService.getCurrentUnitCost(stock.getIngredientId())).setScale(6,
+				RoundingMode.HALF_UP);
+
+		BigDecimal inventoryValue = currentStock.multiply(unitCost).setScale(6, RoundingMode.HALF_UP);
+
+		return InventoryStockAlertResponse.builder()
+
+				.ingredientId(stock.getIngredientId())
+
+				.ingredientCode(stock.getIngredientCode())
+
+				.ingredientName(stock.getIngredientName())
+
+				.currentStock(currentStock)
+
+				.reorderLevel(zero(stock.getReorderLevel()).setScale(4, RoundingMode.HALF_UP))
+
+				.targetStockLevel(stock.getTargetStockLevel())
+
+				.stockStatus(determineStockStatus(stock))
+
+				.suggestedReorderQuantity(calculateSuggestedReorder(stock))
+
+				.unitCost(unitCost)
+
+				.inventoryValue(inventoryValue)
+
+				.alertEnabled(stock.getAlertEnabled())
+
+				.build();
+	}
+
+	public List<RecentInventoryMovementResponse> getRecentInventoryMovements(int limit) {
+
+		int safeLimit = Math.min(Math.max(limit, 1), 100);
+
+		return inventoryMovementRepository.findRecentMovements(PageRequest.of(0, safeLimit)).stream()
+				.map(this::toRecentMovement).toList();
+	}
+
+	private RecentInventoryMovementResponse toRecentMovement(RecentInventoryMovementProjection row) {
+
+		BigDecimal quantity = zero(row.getQuantity());
+
+		BigDecimal direction = BigDecimal.valueOf(row.getDirection());
+
+		BigDecimal signedQuantity = quantity.multiply(direction).setScale(4, RoundingMode.HALF_UP);
+
+		return RecentInventoryMovementResponse.builder()
+
+				.id(row.getId())
+
+				.ingredientId(row.getIngredientId())
+
+				.ingredientCode(row.getIngredientCode())
+
+				.ingredientName(row.getIngredientName())
+
+				.movementTypeCode(row.getMovementTypeCode())
+
+				.movementTypeName(row.getMovementTypeName())
+
+				.direction(row.getDirection())
+
+				.quantity(quantity)
+
+				.signedQuantity(signedQuantity)
+
+				.unitCost(row.getUnitCost())
+
+				.referenceType(row.getReferenceType())
+
+				.referenceId(row.getReferenceId())
+
+				.referenceNo(row.getReferenceNo())
+
+				.reason(row.getReason())
+
+				.occurredAt(row.getOccurredAt())
+
+				.createdByUserId(row.getCreatedByUserId())
+
+				.createdByUsername(row.getCreatedByUsername())
 
 				.build();
 	}

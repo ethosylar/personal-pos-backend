@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.dashboard.response.DashboardSummaryResponse;
+import site.ethosylar.pos.dashboard.response.InventoryStockAlertResponse;
+import site.ethosylar.pos.dashboard.response.InventorySummaryResponse;
 import site.ethosylar.pos.dashboard.response.MonthlySalesTrendResponse;
+import site.ethosylar.pos.dashboard.response.RecentInventoryMovementResponse;
 import site.ethosylar.pos.dashboard.response.TopProductResponse;
 import site.ethosylar.pos.dashboard.service.DashboardService;
 
@@ -56,5 +59,35 @@ public class DashboardController {
 			@RequestParam(defaultValue = "10") Integer limit) {
 
 		return ResponseEntity.ok(dashboardService.getTopProducts(year, month, limit));
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'DASHBOARD', 'VIEW')")
+	@GetMapping("/inventory-summary")
+	public ResponseEntity<InventorySummaryResponse> getInventorySummary() {
+
+		return ResponseEntity.ok(dashboardService.getInventorySummary());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'DASHBOARD', 'VIEW')")
+	@GetMapping("/stock-alerts")
+	public ResponseEntity<List<InventoryStockAlertResponse>> getStockAlerts() {
+
+		return ResponseEntity.ok(dashboardService.getStockAlerts());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'DASHBOARD', 'VIEW')")
+	@GetMapping("/inventory-stock")
+	public ResponseEntity<List<InventoryStockAlertResponse>> getInventoryStock() {
+
+		return ResponseEntity.ok(dashboardService.getInventoryStock());
+	}
+
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, " + "'DASHBOARD', 'VIEW')")
+	@GetMapping("/recent-stock-movements")
+	public ResponseEntity<List<RecentInventoryMovementResponse>> getRecentStockMovements(
+
+			@RequestParam(defaultValue = "10") Integer limit) {
+
+		return ResponseEntity.ok(dashboardService.getRecentInventoryMovements(limit));
 	}
 }
