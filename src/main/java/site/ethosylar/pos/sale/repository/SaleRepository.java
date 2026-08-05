@@ -1,5 +1,7 @@
 package site.ethosylar.pos.sale.repository;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +24,41 @@ public interface SaleRepository extends JpaRepository<SaleEntity, Long>, JpaSpec
 			WHERE s.id = :id
 			""")
 	Optional<SaleEntity> findByIdForUpdate(@Param("id") Long id);
+
+	long countByStatus_CodeIgnoreCaseAndSoldAtGreaterThanEqualAndSoldAtLessThan(String statusCode, OffsetDateTime start,
+			OffsetDateTime end);
+
+	@Query("""
+			SELECT
+			    COALESCE(SUM(s.subtotal), 0)
+			    -
+			    COALESCE(SUM(s.discountAmount), 0)
+			FROM SaleEntity s
+			WHERE UPPER(s.status.code) = UPPER(:statusCode)
+			  AND s.soldAt >= :start
+			  AND s.soldAt < :end
+			""")
+	BigDecimal calculateNetSalesRevenue(@Param("statusCode") String statusCode, @Param("start") OffsetDateTime start,
+			@Param("end") OffsetDateTime end);
+
+	@Query("""
+			SELECT COALESCE(SUM(s.taxAmount), 0)
+			FROM SaleEntity s
+			WHERE UPPER(s.status.code) = UPPER(:statusCode)
+			  AND s.soldAt >= :start
+			  AND s.soldAt < :end
+			""")
+	BigDecimal calculateTaxCollected(@Param("statusCode") String statusCode, @Param("start") OffsetDateTime start,
+			@Param("end") OffsetDateTime end);
+
+	@Query("""
+			SELECT COALESCE(SUM(s.totalCostSnapshot), 0)
+			FROM SaleEntity s
+			WHERE UPPER(s.status.code) = UPPER(:statusCode)
+			  AND s.soldAt >= :start
+			  AND s.soldAt < :end
+			""")
+	BigDecimal calculateCogs(@Param("statusCode") String statusCode, @Param("start") OffsetDateTime start,
+			@Param("end") OffsetDateTime end);
+
 }

@@ -1,5 +1,6 @@
 package site.ethosylar.pos.payroll.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,19 @@ public interface StaffMonthlyCostRepository
 			WHERE c.id = :id
 			""")
 	Optional<StaffMonthlyCostEntity> findByIdForUpdate(@Param("id") Long id);
+
+	long countByStatus_CodeIgnoreCaseAndCurrentRecordTrueAndPeriodYearAndPeriodMonth(String statusCode,
+			Short periodYear, Short periodMonth);
+
+	@Query("""
+			SELECT COALESCE(SUM(c.totalStaffCost), 0)
+			FROM StaffMonthlyCostEntity c
+			WHERE UPPER(c.status.code) = UPPER(:statusCode)
+			  AND c.currentRecord = TRUE
+			  AND c.periodYear = :periodYear
+			  AND c.periodMonth = :periodMonth
+			""")
+	BigDecimal calculatePostedStaffCost(@Param("statusCode") String statusCode, @Param("periodYear") Short periodYear,
+			@Param("periodMonth") Short periodMonth);
+
 }
