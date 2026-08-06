@@ -8,6 +8,7 @@ site\ethosylar\pos\user\repository\UserRoleRepository.class
 site\ethosylar\pos\sale\entity\SaleItemEntity.class
 site\ethosylar\pos\staff\repository\StaffSalaryRateRepository.class
 site\ethosylar\pos\category\response\CategoryResponse$CategoryResponseBuilder.class
+site\ethosylar\pos\procurement\controller\ProcurementRecommendationController.class
 site\ethosylar\pos\accounting\request\GenerateMonthlyAccountingRequest.class
 site\ethosylar\pos\PersonalPosBackendApplication.class
 site\ethosylar\pos\category\request\UpdateCategoryRequest.class
@@ -44,6 +45,7 @@ site\ethosylar\pos\security\handler\RestAccessDeniedHandler.class
 site\ethosylar\pos\user\response\UserResponse.class
 site\ethosylar\pos\ingredient\request\IngredientFilterRequest.class
 site\ethosylar\pos\procurement\response\PurchaseOrderResponse.class
+site\ethosylar\pos\procurement\response\ReorderRecommendationResponse$ReorderRecommendationResponseBuilder.class
 site\ethosylar\pos\module\service\ModuleService.class
 site\ethosylar\pos\role\request\AssignRoleModulesRequest.class
 site\ethosylar\pos\auth\response\AuthUserResponse.class
@@ -146,6 +148,7 @@ site\ethosylar\pos\ingredient\request\UpdateIngredientSupplierRequest.class
 site\ethosylar\pos\procurement\entity\PurchaseOrderEntity.class
 site\ethosylar\pos\audit\request\AuditLogFilterRequest.class
 site\ethosylar\pos\accounting\service\MonthlyAccountingQueryService.class
+site\ethosylar\pos\procurement\response\ReorderRecommendationResponse.class
 site\ethosylar\pos\ingredient\response\IngredientSupplierResponse.class
 site\ethosylar\pos\permission\entity\RoleModulePermissionEntity.class
 site\ethosylar\pos\ingredient\request\CreateIngredientSupplierRequest.class
@@ -323,6 +326,7 @@ site\ethosylar\pos\payroll\service\StaffMonthlyCostNumberService.class
 site\ethosylar\pos\accounting\repository\MonthlyAccountingStatusRepository.class
 site\ethosylar\pos\recipe\service\RecipeCostingService.class
 site\ethosylar\pos\staff\entity\StaffSalaryRateEntity.class
+site\ethosylar\pos\procurement\service\ReorderRecommendationService.class
 site\ethosylar\pos\staff\request\CreateSalaryRateRequest.class
 site\ethosylar\pos\user\controller\UserController.class
 site\ethosylar\pos\product\request\UpdateProductRequest.class
