@@ -2,8 +2,6 @@ package site.ethosylar.pos.procurement.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.ingredient.repository.IngredientSupplierRepository;
 import site.ethosylar.pos.inventory.projection.InventoryStockProjection;
 import site.ethosylar.pos.inventory.repository.InventoryMovementRepository;
-import site.ethosylar.pos.procurement.request.CreatePurchaseOrderItemRequest;
-import site.ethosylar.pos.procurement.request.CreatePurchaseOrderRequest;
-import site.ethosylar.pos.procurement.request.GenerateReorderPurchaseOrdersRequest;
 import site.ethosylar.pos.procurement.response.ReorderRecommendationResponse;
 
 @Service
@@ -224,84 +219,6 @@ public class ReorderRecommendationService {
 		Set<Long> selected = new HashSet<>(ingredientIds);
 
 		return getRecommendations().stream().filter(r -> selected.contains(r.getIngredientId())).toList();
-	}
-
-	private CreatePurchaseOrderRequest buildPurchaseOrderRequest(Long supplierId,
-
-			List<ReorderRecommendationResponse> recommendations,
-
-			GenerateReorderPurchaseOrdersRequest generationRequest) {
-
-		CreatePurchaseOrderRequest request = new CreatePurchaseOrderRequest();
-
-		request.setSupplierId(supplierId);
-
-		request.setOrderDate(LocalDate.now());
-
-		request.setExpectedDeliveryDate(generationRequest.getExpectedDeliveryDate());
-
-		/*
-		 * User can edit these on the resulting DRAFT PO later.
-		 */
-		request.setTaxAmount(BigDecimal.ZERO);
-
-		request.setDeliveryFee(BigDecimal.ZERO);
-
-		request.setNotes(buildNotes(generationRequest.getNotes()));
-
-		List<CreatePurchaseOrderItemRequest> items = new ArrayList<>();
-
-		for (ReorderRecommendationResponse recommendation : recommendations) {
-
-			CreatePurchaseOrderItemRequest item = new CreatePurchaseOrderItemRequest();
-
-			item.setIngredientId(recommendation.getIngredientId());
-
-			/*
-			 * IMPORTANT:
-			 *
-			 * orderedQuantity is purchase units / packs.
-			 *
-			 * Example: shortage = 3200g pack = 1000g suggestedPackCount = 4
-			 *
-			 * orderedQuantity = 4
-			 */
-			item.setOrderedQuantity(recommendation.getSuggestedPackCount());
-
-			/*
-			 * Snapshot the currently recommended supplier price.
-			 *
-			 * PurchaseOrderService also supports null here and would fall back to supplier
-			 * master price, but explicitly passing it makes the generated recommendation
-			 * easier to reason about.
-			 */
-			item.setUnitPrice(recommendation.getPurchasePrice());
-
-			item.setNotes(String.format(
-					"Auto-generated from reorder recommendation. " + "Current stock: %s, target: %s, "
-							+ "suggested base quantity: %s.",
-					recommendation.getCurrentStock().toPlainString(),
-					recommendation.getTargetStockLevel().toPlainString(),
-					recommendation.getSuggestedPurchaseQuantity().toPlainString()));
-
-			items.add(item);
-		}
-
-		request.setItems(items);
-
-		return request;
-	}
-
-	private String buildNotes(String userNotes) {
-
-		String generated = "Draft purchase order generated from inventory reorder recommendations.";
-
-		if (userNotes == null || userNotes.isBlank()) {
-
-			return generated;
-		}
-
-		return generated + " " + userNotes.trim();
 	}
 
 }
