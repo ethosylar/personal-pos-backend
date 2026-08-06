@@ -19,10 +19,11 @@ import site.ethosylar.pos.accounting.request.VoidMonthlyAccountingRequest;
 import site.ethosylar.pos.accounting.response.MonthlyAccountingResponse;
 import site.ethosylar.pos.accounting.service.MonthlyAccountingQueryService;
 import site.ethosylar.pos.accounting.service.MonthlyAccountingService;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 
 @RestController
-@RequestMapping("/api/accounting/monthly")
+@RequestMapping(ApiPaths.V1 + "/accounting/monthly")
 @RequiredArgsConstructor
 public class MonthlyAccountingController {
 

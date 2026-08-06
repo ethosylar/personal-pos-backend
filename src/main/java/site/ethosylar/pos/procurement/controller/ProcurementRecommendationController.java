@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.procurement.request.GenerateReorderPurchaseOrdersRequest;
 import site.ethosylar.pos.procurement.response.PurchaseOrderResponse;
 import site.ethosylar.pos.procurement.response.ReorderRecommendationResponse;
@@ -20,7 +21,7 @@ import site.ethosylar.pos.procurement.service.ReorderPurchaseOrderService;
 import site.ethosylar.pos.procurement.service.ReorderRecommendationService;
 
 @RestController
-@RequestMapping("/api/procurement")
+@RequestMapping(ApiPaths.V1 + "/procurement")
 @RequiredArgsConstructor
 public class ProcurementRecommendationController {
 

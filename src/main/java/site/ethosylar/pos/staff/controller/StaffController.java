@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.staff.request.CreateSalaryRateRequest;
 import site.ethosylar.pos.staff.request.CreateStaffRequest;
@@ -29,7 +30,7 @@ import site.ethosylar.pos.staff.service.StaffSalaryService;
 import site.ethosylar.pos.staff.service.StaffService;
 
 @RestController
-@RequestMapping("/api/staff")
+@RequestMapping(ApiPaths.V1 + "/staff")
 @RequiredArgsConstructor
 public class StaffController {
 

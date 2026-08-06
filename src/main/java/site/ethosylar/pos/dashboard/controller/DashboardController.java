@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.dashboard.response.DashboardSummaryResponse;
 import site.ethosylar.pos.dashboard.response.InventoryStockAlertResponse;
 import site.ethosylar.pos.dashboard.response.InventorySummaryResponse;
@@ -22,7 +23,7 @@ import site.ethosylar.pos.dashboard.response.TopProductResponse;
 import site.ethosylar.pos.dashboard.service.DashboardService;
 
 @RestController
-@RequestMapping("/api/dashboard")
+@RequestMapping(ApiPaths.V1 + "/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
 

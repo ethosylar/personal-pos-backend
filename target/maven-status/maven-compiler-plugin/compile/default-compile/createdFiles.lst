@@ -57,6 +57,7 @@ site\ethosylar\pos\staff\response\StaffResponse.class
 site\ethosylar\pos\accounting\request\VoidMonthlyAccountingRequest.class
 site\ethosylar\pos\inventory\request\StockAdjustmentRequest.class
 site\ethosylar\pos\payroll\service\StaffMonthlyCostService.class
+site\ethosylar\pos\common\config\ApiPaths.class
 site\ethosylar\pos\recipe\response\RecipeSummaryResponse.class
 site\ethosylar\pos\recipe\response\RecipeSummaryResponse$RecipeSummaryResponseBuilder.class
 site\ethosylar\pos\procurement\repository\GoodsReceiptRepository.class

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.inventory.request.InventoryBalanceFilterRequest;
 import site.ethosylar.pos.inventory.request.InventoryMovementFilterRequest;
@@ -31,7 +32,7 @@ import site.ethosylar.pos.inventory.service.InventoryQueryService;
 import site.ethosylar.pos.inventory.service.InventoryStockPolicyService;
 
 @RestController
-@RequestMapping("/api/inventory")
+@RequestMapping(ApiPaths.V1 + "/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
 

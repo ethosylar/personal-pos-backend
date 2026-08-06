@@ -47,6 +47,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\response\CategoryResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\IngredientCategoryService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\ProductCategoryService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\config\ApiPaths.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\controller\LookupController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\entity\TimestampedEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\error\ApiErrorCode.java

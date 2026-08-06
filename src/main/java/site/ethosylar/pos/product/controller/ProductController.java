@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.product.request.ChangeProductAvailabilityRequest;
@@ -26,7 +27,7 @@ import site.ethosylar.pos.product.response.ProductResponse;
 import site.ethosylar.pos.product.service.ProductService;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping(ApiPaths.V1 + "/products")
 @RequiredArgsConstructor
 public class ProductController {
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.ingredient.request.CreateIngredientRequest;
@@ -31,7 +32,7 @@ import site.ethosylar.pos.ingredient.service.IngredientService;
 import site.ethosylar.pos.ingredient.service.IngredientSupplierService;
 
 @RestController
-@RequestMapping("/api/ingredients")
+@RequestMapping(ApiPaths.V1 + "/ingredients")
 @RequiredArgsConstructor
 public class IngredientController {
 

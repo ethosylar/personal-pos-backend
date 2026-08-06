@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.payroll.request.CreateStaffMonthlyCostRequest;
 import site.ethosylar.pos.payroll.request.StaffMonthlyCostFilterRequest;
@@ -24,7 +25,7 @@ import site.ethosylar.pos.payroll.service.PayrollQueryService;
 import site.ethosylar.pos.payroll.service.StaffMonthlyCostService;
 
 @RestController
-@RequestMapping("/api/payroll")
+@RequestMapping(ApiPaths.V1 + "/payroll")
 @RequiredArgsConstructor
 public class PayrollController {
 

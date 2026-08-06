@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.user.request.AssignUserRolesRequest;
 import site.ethosylar.pos.user.request.ChangeUserStatusRequest;
 import site.ethosylar.pos.user.request.CreateUserRequest;
@@ -26,7 +27,7 @@ import site.ethosylar.pos.user.response.UserResponse;
 import site.ethosylar.pos.user.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(ApiPaths.V1 + "/users")
 @RequiredArgsConstructor
 public class UserController {
 

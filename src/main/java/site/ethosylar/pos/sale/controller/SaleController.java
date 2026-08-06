@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.sale.request.SaleFilterRequest;
 import site.ethosylar.pos.sale.request.VoidSaleRequest;
@@ -22,7 +23,7 @@ import site.ethosylar.pos.sale.service.SaleService;
 import site.ethosylar.pos.sale.service.SaleVoidService;
 
 @RestController
-@RequestMapping("/api/sales")
+@RequestMapping(ApiPaths.V1 + "/sales")
 @RequiredArgsConstructor
 public class SaleController {
 

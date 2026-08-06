@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
+import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
+import site.ethosylar.pos.common.request.MasterDataFilterRequest;
+import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.supplier.request.CreateSupplierRequest;
 import site.ethosylar.pos.supplier.request.UpdateSupplierRequest;
 import site.ethosylar.pos.supplier.response.SupplierResponse;
 import site.ethosylar.pos.supplier.service.SupplierService;
-import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
-import site.ethosylar.pos.common.request.MasterDataFilterRequest;
-import site.ethosylar.pos.common.response.PageResponse;
 
 @RestController
-@RequestMapping("/api/suppliers")
+@RequestMapping(ApiPaths.V1 + "/suppliers")
 @RequiredArgsConstructor
 public class SupplierController {
 
