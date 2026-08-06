@@ -1,8 +1,11 @@
 package site.ethosylar.pos.common.exception;
 
-public class DuplicateResourceException extends RuntimeException {
+import site.ethosylar.pos.common.error.ApiErrorCode;
 
-    public DuplicateResourceException(String message) {
-        super(message);
-    }
+public class DuplicateResourceException extends ApplicationException {
+
+	public DuplicateResourceException(String message) {
+
+		super(ApiErrorCode.DUPLICATE_RESOURCE, message);
+	}
 }

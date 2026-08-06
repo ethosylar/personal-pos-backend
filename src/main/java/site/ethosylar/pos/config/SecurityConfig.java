@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.security.handler.RestAccessDeniedHandler;
 import site.ethosylar.pos.security.handler.RestAuthenticationEntryPoint;
 
@@ -31,10 +32,10 @@ public class SecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)
 						.accessDeniedHandler(accessDeniedHandler))
 
-				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers("/api/auth/login", "/actuator/health").permitAll()
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(ApiPaths.V1 + "/auth/login", "/actuator/health").permitAll()
 
-								.anyRequest().authenticated())
+						.anyRequest().authenticated())
 
 				.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 

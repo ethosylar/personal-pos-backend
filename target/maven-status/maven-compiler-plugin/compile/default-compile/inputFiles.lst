@@ -47,8 +47,13 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\response\CategoryResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\IngredientCategoryService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\ProductCategoryService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\config\ApiPaths.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\controller\LookupController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\entity\TimestampedEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\error\ApiErrorCode.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\error\ApiErrorResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\error\ApiFieldError.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\ApplicationException.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\BusinessRuleException.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\DuplicateResourceException.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\GlobalExceptionHandler.java
@@ -168,6 +173,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\service\ModulePermissionService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\permission\service\PermissionService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\PersonalPosBackendApplication.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\controller\ProcurementRecommendationController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\controller\PurchaseOrderController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\entity\GoodsReceiptEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\entity\GoodsReceiptItemEntity.java
@@ -184,6 +190,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\CreateGoodsReceiptRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\CreatePurchaseOrderItemRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\CreatePurchaseOrderRequest.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\GenerateReorderPurchaseOrdersRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\PurchaseOrderFilterRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\UpdatePurchaseOrderItemRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\request\UpdatePurchaseOrderRequest.java
@@ -191,9 +198,12 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\response\GoodsReceiptResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\response\PurchaseOrderItemResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\response\PurchaseOrderResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\response\ReorderRecommendationResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\service\GoodsReceiptService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\service\ProcurementNumberService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\service\PurchaseOrderService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\service\ReorderPurchaseOrderService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\procurement\service\ReorderRecommendationService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\controller\ProductController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\entity\ProductEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\product\mapper\ProductMapper.java

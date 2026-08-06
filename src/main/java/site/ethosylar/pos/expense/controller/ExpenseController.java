@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.expense.request.CreateExpenseRequest;
 import site.ethosylar.pos.expense.request.ExpenseFilterRequest;
@@ -24,7 +25,7 @@ import site.ethosylar.pos.expense.service.ExpenseQueryService;
 import site.ethosylar.pos.expense.service.ExpenseService;
 
 @RestController
-@RequestMapping("/api/expenses")
+@RequestMapping(ApiPaths.V1 + "/expenses")
 @RequiredArgsConstructor
 public class ExpenseController {
 

@@ -20,12 +20,13 @@ import site.ethosylar.pos.category.request.UpdateCategoryRequest;
 import site.ethosylar.pos.category.response.CategoryResponse;
 import site.ethosylar.pos.category.service.IngredientCategoryService;
 import site.ethosylar.pos.category.service.ProductCategoryService;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.request.MasterDataFilterRequest;
 import site.ethosylar.pos.common.response.PageResponse;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping(ApiPaths.V1 + "/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 

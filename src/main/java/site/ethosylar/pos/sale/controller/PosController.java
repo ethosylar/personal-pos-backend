@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.sale.request.CompleteSaleRequest;
 import site.ethosylar.pos.sale.request.CreateSaleItemRequest;
 import site.ethosylar.pos.sale.request.CreateSaleRequest;
@@ -24,7 +25,7 @@ import site.ethosylar.pos.sale.service.SaleCheckoutService;
 import site.ethosylar.pos.sale.service.SaleService;
 
 @RestController
-@RequestMapping("/api/pos/sales")
+@RequestMapping(ApiPaths.V1 + "/pos/sales")
 @RequiredArgsConstructor
 public class PosController {
 

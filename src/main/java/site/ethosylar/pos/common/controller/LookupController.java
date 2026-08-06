@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.response.AuditActionLookupResponse;
 import site.ethosylar.pos.audit.service.AuditActionService;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.expense.response.ExpenseCategoryResponse;
 import site.ethosylar.pos.expense.service.ExpenseLookupService;
 import site.ethosylar.pos.module.response.ModuleResponse;
@@ -26,7 +27,7 @@ import site.ethosylar.pos.user.response.UserStatusResponse;
 import site.ethosylar.pos.user.service.UserStatusService;
 
 @RestController
-@RequestMapping("/api/lookups")
+@RequestMapping(ApiPaths.V1 + "/lookups")
 @RequiredArgsConstructor
 public class LookupController {
 

@@ -1,8 +1,16 @@
 package site.ethosylar.pos.common.exception;
 
-public class BusinessRuleException extends RuntimeException {
+import site.ethosylar.pos.common.error.ApiErrorCode;
 
-    public BusinessRuleException(String message) {
-        super(message);
-    }
+public class BusinessRuleException extends ApplicationException {
+
+	public BusinessRuleException(String message) {
+
+		super(ApiErrorCode.BUSINESS_RULE_VIOLATION, message);
+	}
+
+	public BusinessRuleException(ApiErrorCode errorCode, String message) {
+
+		super(errorCode, message);
+	}
 }

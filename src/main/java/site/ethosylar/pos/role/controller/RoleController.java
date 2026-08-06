@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.role.request.AssignModulePermissionsRequest;
 import site.ethosylar.pos.role.request.AssignRoleModulesRequest;
 import site.ethosylar.pos.role.request.CreateRoleRequest;
@@ -24,7 +25,7 @@ import site.ethosylar.pos.role.response.RoleResponse;
 import site.ethosylar.pos.role.service.RoleService;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping(ApiPaths.V1 + "/roles")
 @RequiredArgsConstructor
 public class RoleController {
 

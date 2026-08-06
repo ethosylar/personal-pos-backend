@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.request.AuditLogFilterRequest;
 import site.ethosylar.pos.audit.response.AuditLogResponse;
 import site.ethosylar.pos.audit.service.AuditLogQueryService;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
 
 @RestController
-@RequestMapping("/api/audit-logs")
+@RequestMapping(ApiPaths.V1 + "/audit-logs")
 @RequiredArgsConstructor
 public class AuditLogController {
 

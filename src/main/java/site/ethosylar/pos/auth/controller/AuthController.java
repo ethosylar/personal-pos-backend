@@ -15,9 +15,10 @@ import site.ethosylar.pos.auth.request.LoginRequest;
 import site.ethosylar.pos.auth.response.AuthUserResponse;
 import site.ethosylar.pos.auth.response.LoginResponse;
 import site.ethosylar.pos.auth.service.AuthService;
+import site.ethosylar.pos.common.config.ApiPaths;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(ApiPaths.V1 + "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.recipe.request.CreateRecipeItemRequest;
 import site.ethosylar.pos.recipe.request.CreateRecipeRequest;
 import site.ethosylar.pos.recipe.request.UpdateRecipeItemRequest;
@@ -25,7 +26,7 @@ import site.ethosylar.pos.recipe.response.RecipeSummaryResponse;
 import site.ethosylar.pos.recipe.service.RecipeService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(ApiPaths.V1 + "")
 @RequiredArgsConstructor
 public class RecipeController {
 

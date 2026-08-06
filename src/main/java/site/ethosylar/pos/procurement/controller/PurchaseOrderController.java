@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.procurement.request.CreateGoodsReceiptRequest;
 import site.ethosylar.pos.procurement.request.CreatePurchaseOrderRequest;
 import site.ethosylar.pos.procurement.response.GoodsReceiptResponse;
@@ -19,7 +20,7 @@ import site.ethosylar.pos.procurement.service.GoodsReceiptService;
 import site.ethosylar.pos.procurement.service.PurchaseOrderService;
 
 @RestController
-@RequestMapping("/api/purchase-orders")
+@RequestMapping(ApiPaths.V1 + "/purchase-orders")
 @RequiredArgsConstructor
 public class PurchaseOrderController {
 
