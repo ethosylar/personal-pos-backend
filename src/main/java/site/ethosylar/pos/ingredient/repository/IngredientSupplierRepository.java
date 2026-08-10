@@ -3,6 +3,7 @@ package site.ethosylar.pos.ingredient.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import site.ethosylar.pos.ingredient.entity.IngredientSupplierEntity;
@@ -18,4 +19,7 @@ public interface IngredientSupplierRepository extends JpaRepository<IngredientSu
 	Optional<IngredientSupplierEntity> findByIdAndIngredient_Id(Long id, Long ingredientId);
 
 	Optional<IngredientSupplierEntity> findFirstByIngredient_IdAndPreferredTrueAndActiveTrue(Long ingredientId);
+
+	@EntityGraph(attributePaths = { "ingredient" })
+	List<IngredientSupplierEntity> findBySupplier_IdOrderByIngredient_NameAsc(Long supplierId);
 }

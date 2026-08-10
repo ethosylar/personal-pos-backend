@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;

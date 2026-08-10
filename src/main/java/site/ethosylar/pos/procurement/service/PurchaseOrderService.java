@@ -7,17 +7,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
 import site.ethosylar.pos.common.exception.DuplicateResourceException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
+import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.ingredient.entity.IngredientEntity;
 import site.ethosylar.pos.ingredient.entity.IngredientSupplierEntity;
 import site.ethosylar.pos.ingredient.repository.IngredientRepository;
@@ -26,6 +29,7 @@ import site.ethosylar.pos.procurement.entity.PurchaseOrderEntity;
 import site.ethosylar.pos.procurement.entity.PurchaseOrderItemEntity;
 import site.ethosylar.pos.procurement.entity.PurchaseOrderStatusEntity;
 import site.ethosylar.pos.procurement.mapper.ProcurementMapper;
+import site.ethosylar.pos.procurement.projection.PurchaseOrderSummaryProjection;
 import site.ethosylar.pos.procurement.repository.GoodsReceiptItemRepository;
 import site.ethosylar.pos.procurement.repository.GoodsReceiptRepository;
 import site.ethosylar.pos.procurement.repository.PurchaseOrderItemRepository;
@@ -35,6 +39,7 @@ import site.ethosylar.pos.procurement.request.CreatePurchaseOrderItemRequest;
 import site.ethosylar.pos.procurement.request.CreatePurchaseOrderRequest;
 import site.ethosylar.pos.procurement.response.PurchaseOrderItemResponse;
 import site.ethosylar.pos.procurement.response.PurchaseOrderResponse;
+import site.ethosylar.pos.procurement.response.PurchaseOrderSummaryResponse;
 import site.ethosylar.pos.supplier.entity.SupplierEntity;
 import site.ethosylar.pos.supplier.repository.SupplierRepository;
 import site.ethosylar.pos.user.entity.UserEntity;
@@ -353,6 +358,61 @@ public class PurchaseOrderService {
 		BigDecimal remaining = item.getOrderedQuantity().subtract(received);
 
 		return procurementMapper.toPurchaseOrderItemResponse(item, received, remaining);
+	}
+	
+	private PurchaseOrderSummaryResponse toSummary(PurchaseOrderSummaryProjection row) {
+
+		return PurchaseOrderSummaryResponse.builder()
+
+				.id(row.getId())
+
+				.poNumber(row.getPoNumber())
+
+				.statusCode(row.getStatusCode())
+
+				.statusName(row.getStatusName())
+
+				.supplierId(row.getSupplierId())
+
+				.supplierCode(row.getSupplierCode())
+
+				.supplierName(row.getSupplierName())
+
+				.orderDate(row.getOrderDate())
+
+				.expectedDeliveryDate(row.getExpectedDeliveryDate())
+
+				.itemCount(Math.toIntExact(row.getItemCount()))
+
+				.subtotal(row.getSubtotal())
+
+				.taxAmount(row.getTaxAmount())
+
+				.deliveryFee(row.getDeliveryFee())
+
+				.grandTotal(row.getGrandTotal())
+
+				.createdAt(row.getCreatedAt())
+
+				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public PageResponse<PurchaseOrderSummaryResponse> getPurchaseOrders(String search, String statusCode,
+			Long supplierId, LocalDate fromDate, LocalDate toDate, int page, int perPage) {
+
+		int safePage = Math.max(page, 1);
+
+		int safePerPage = Math.min(Math.max(perPage, 1), 100);
+
+		PageRequest pageable = PageRequest.of(safePage - 1, safePerPage);
+
+		Page<PurchaseOrderSummaryProjection> result = purchaseOrderRepository.findPurchaseOrderSummaries(
+				normalize(search), normalize(statusCode), supplierId, fromDate, toDate, pageable);
+
+		Page<PurchaseOrderSummaryResponse> mapped = result.map(this::toSummary);
+
+		return PageResponse.from(mapped);
 	}
 
 }

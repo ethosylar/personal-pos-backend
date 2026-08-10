@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
@@ -218,7 +218,7 @@ public class SaleService {
 		return saleMapper.toResponse(sale, items, payments);
 	}
 
-	@Transactional(Transactional.TxType.SUPPORTS)
+	@Transactional(readOnly = true)
 	public SaleResponse getById(Long id) {
 
 		SaleEntity sale = saleRepository.findById(id)

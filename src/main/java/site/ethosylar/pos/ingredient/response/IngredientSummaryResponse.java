@@ -39,4 +39,10 @@ public class IngredientSummaryResponse {
 	private OffsetDateTime createdAt;
 
 	private OffsetDateTime updatedAt;
+	
+	private long preferredSupplierId;
+	
+	private String preferredSupplierName;
+	
+	private BigDecimal currentUnitCost;
 }

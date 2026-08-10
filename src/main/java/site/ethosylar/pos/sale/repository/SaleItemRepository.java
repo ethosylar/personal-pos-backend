@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ import site.ethosylar.pos.sale.entity.SaleItemEntity;
 
 public interface SaleItemRepository extends JpaRepository<SaleItemEntity, Long> {
 
+	@EntityGraph(attributePaths = { "product" })
 	List<SaleItemEntity> findBySale_IdOrderByIdAsc(Long saleId);
 
 	Optional<SaleItemEntity> findByIdAndSale_Id(Long id, Long saleId);
@@ -70,5 +72,7 @@ public interface SaleItemRepository extends JpaRepository<SaleItemEntity, Long> 
 
 			ORDER BY revenue DESC
 			""", nativeQuery = true)
-	List<TopProductProjection> findTopProducts(@Param("start") OffsetDateTime start, @Param("end") OffsetDateTime end, Pageable pageable);
+	List<TopProductProjection> findTopProducts(@Param("start") OffsetDateTime start, @Param("end") OffsetDateTime end,
+			Pageable pageable);
+
 }

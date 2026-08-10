@@ -17,17 +17,20 @@ import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
-import site.ethosylar.pos.supplier.entity.SupplierEntity;
-import site.ethosylar.pos.supplier.mapper.SupplierMapper;
-import site.ethosylar.pos.supplier.repository.SupplierRepository;
-import site.ethosylar.pos.supplier.request.CreateSupplierRequest;
-import site.ethosylar.pos.supplier.request.UpdateSupplierRequest;
-import site.ethosylar.pos.supplier.response.SupplierResponse;
 import site.ethosylar.pos.common.exception.DuplicateResourceException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.request.MasterDataFilterRequest;
 import site.ethosylar.pos.common.response.PageResponse;
+import site.ethosylar.pos.ingredient.repository.IngredientSupplierRepository;
+import site.ethosylar.pos.supplier.entity.SupplierEntity;
+import site.ethosylar.pos.supplier.mapper.SupplierMapper;
+import site.ethosylar.pos.supplier.projection.SupplierSummaryProjection;
+import site.ethosylar.pos.supplier.repository.SupplierRepository;
+import site.ethosylar.pos.supplier.request.CreateSupplierRequest;
+import site.ethosylar.pos.supplier.request.UpdateSupplierRequest;
+import site.ethosylar.pos.supplier.response.SupplierResponse;
+import site.ethosylar.pos.supplier.response.SupplierSummaryResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -37,15 +40,13 @@ public class SupplierService {
 	private final SupplierRepository repository;
 	private final SupplierMapper mapper;
 	private final AuditService auditService;
+	private final IngredientSupplierRepository ingredientSupplierRepository;
 
 	@Transactional(readOnly = true)
 	public PageResponse<SupplierResponse> search(MasterDataFilterRequest filter) {
 
 		PageRequest pageable = PageRequest.of(filter.getPage() - 1, filter.getPerPage(),
-				Sort.by(
-						Sort.Order.asc("contactPerson"), 
-						Sort.Order.asc("name"))
-				);
+				Sort.by(Sort.Order.asc("contactPerson"), Sort.Order.asc("name")));
 
 		Specification<SupplierEntity> specification = buildSpecification(filter);
 
@@ -160,12 +161,10 @@ public class SupplierService {
 
 				String term = "%" + search.toLowerCase(Locale.ROOT) + "%";
 
-				predicates.add(cb.or(
-						cb.like(cb.lower(root.<String>get("code")), term),
+				predicates.add(cb.or(cb.like(cb.lower(root.<String>get("code")), term),
 						cb.like(cb.lower(root.<String>get("name")), term),
 						cb.like(cb.lower(root.<String>get("contactPerson")), term),
-						cb.like(cb.lower(root.<String>get("email")), term)
-						));
+						cb.like(cb.lower(root.<String>get("email")), term)));
 			}
 
 			if (filter.getActive() != null) {
@@ -209,5 +208,42 @@ public class SupplierService {
 		}
 
 		return value.trim();
+	}
+
+	private SupplierSummaryResponse toSummary(SupplierSummaryProjection row) {
+
+		return SupplierSummaryResponse.builder()
+
+				.id(row.getId())
+
+				.code(row.getCode())
+
+				.name(row.getName())
+
+				.contactPerson(row.getContactPerson())
+
+				.phone(row.getPhone())
+
+				.email(row.getEmail())
+
+				.active(row.getActive())
+
+				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public PageResponse<SupplierSummaryResponse> getSuppliers(String search, int page, int perPage) {
+
+		int safePage = Math.max(page, 1);
+
+		int safePerPage = Math.min(Math.max(perPage, 1), 100);
+
+		PageRequest pageable = PageRequest.of(safePage - 1, safePerPage, Sort.by("name").ascending());
+
+		Page<SupplierSummaryProjection> result = repository.findSupplierSummaries(normalize(search), pageable);
+
+		Page<SupplierSummaryResponse> mapped = result.map(this::toSummary);
+
+		return PageResponse.from(mapped);
 	}
 }

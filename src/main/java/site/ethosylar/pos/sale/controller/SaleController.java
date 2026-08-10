@@ -1,5 +1,10 @@
 package site.ethosylar.pos.sale.controller;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -30,8 +36,10 @@ public class SaleController {
 	private final SaleService saleService;
 
 	private final SaleVoidService saleVoidService;
-	
+
 	private final SaleQueryService saleQueryService;
+
+	private static final ZoneId BUSINESS_ZONE = ZoneId.of("Asia/Kuala_Lumpur");
 
 	// =========================================================
 	// GET SALE DETAIL / HISTORY
@@ -57,10 +65,31 @@ public class SaleController {
 		return ResponseEntity.ok(saleVoidService.voidSale(saleId, request));
 	}
 
-	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
 	@GetMapping
-	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@Valid @ModelAttribute SaleFilterRequest filter) {
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
+	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@ModelAttribute SaleFilterRequest request) {
 
-		return ResponseEntity.ok(saleQueryService.search(filter));
+		return ResponseEntity.ok(saleQueryService.getSales(request.getSearch(), request.getStatus(),
+				request.getFromDate(), request.getToDate(), request.getPage() != null ? request.getPage() : 1,
+				request.getPerPage() != null ? request.getPerPage() : 20));
+	}
+
+	@GetMapping
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
+	public ResponseEntity<PageResponse<SaleSummaryResponse>> index(
+
+			@RequestParam(required = false) String search,
+
+			@RequestParam(required = false) String status,
+
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+
+			@RequestParam(defaultValue = "1") int page,
+
+			@RequestParam(defaultValue = "20") int perPage) {
+
+		return ResponseEntity.ok(saleQueryService.getSales(search, status, fromDate, toDate, page, perPage));
 	}
 }
