@@ -1,6 +1,6 @@
 package site.ethosylar.pos.sale.service;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -122,10 +122,10 @@ public class SaleQueryService {
 
 				.build();
 	}
-
+	
 	@Transactional(readOnly = true)
-	public PageResponse<SaleSummaryResponse> getSales(String search, String statusCode, OffsetDateTime fromDate,
-			OffsetDateTime toDate, int page, int perPage) {
+	public PageResponse<SaleSummaryResponse> getSales(String search, String statusCode, LocalDate fromDate,
+			LocalDate toDate, int page, int perPage) {
 
 		int safePage = Math.max(page, 1);
 

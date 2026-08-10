@@ -65,11 +65,13 @@ public class SaleController {
 		return ResponseEntity.ok(saleVoidService.voidSale(saleId, request));
 	}
 
-	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
 	@GetMapping
-	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@Valid @ModelAttribute SaleFilterRequest filter) {
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
+	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@ModelAttribute SaleFilterRequest request) {
 
-		return ResponseEntity.ok(saleQueryService.search(filter));
+		return ResponseEntity.ok(saleQueryService.getSales(request.getSearch(), request.getStatus(),
+				request.getFromDate(), request.getToDate(), request.getPage() != null ? request.getPage() : 1,
+				request.getPerPage() != null ? request.getPerPage() : 20));
 	}
 
 	@GetMapping
@@ -88,9 +90,6 @@ public class SaleController {
 
 			@RequestParam(defaultValue = "20") int perPage) {
 
-		OffsetDateTime from = fromDate != null ? fromDate.atStartOfDay(BUSINESS_ZONE).toOffsetDateTime() : null;
-		OffsetDateTime to = toDate != null ? toDate.plusDays(1).atStartOfDay(BUSINESS_ZONE).toOffsetDateTime() : null;
-
-		return ResponseEntity.ok(saleQueryService.getSales(search, status, from, to, page, perPage));
+		return ResponseEntity.ok(saleQueryService.getSales(search, status, fromDate, toDate, page, perPage));
 	}
 }

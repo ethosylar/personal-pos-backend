@@ -1,6 +1,6 @@
 package site.ethosylar.pos.sale.request;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,9 +19,15 @@ public class SaleFilterRequest {
 	@Positive
 	private Long cashierUserId;
 
-	private OffsetDateTime fromDate;
+//	private OffsetDateTime fromDate;
+//
+//	private OffsetDateTime toDate;
+	
+	 private String status;
+	 
+	private LocalDate fromDate;
 
-	private OffsetDateTime toDate;
+	private LocalDate toDate;
 
 	@Min(1)
 	private Integer page = 1;

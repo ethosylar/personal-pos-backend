@@ -1,6 +1,7 @@
 package site.ethosylar.pos.sale.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -208,9 +209,9 @@ public interface SaleRepository extends JpaRepository<SaleEntity, Long>, JpaSpec
 
 			@Param("statusCode") String statusCode,
 
-			@Param("fromDate") OffsetDateTime fromDate,
+			@Param("fromDate") LocalDate fromDate,
 
-			@Param("toDate") OffsetDateTime toDate,
+			@Param("toDate") LocalDate toDate,
 
 			Pageable pageable);
 

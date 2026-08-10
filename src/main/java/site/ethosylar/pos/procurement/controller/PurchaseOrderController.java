@@ -34,6 +34,8 @@ public class PurchaseOrderController {
 	private final PurchaseOrderService purchaseOrderService;
 
 	private final GoodsReceiptService goodsReceiptService;
+	
+	private final PurchaseOrderService purchaseOrderQueryService;
 
 	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'PURCHASING', 'CREATE_PO')")
 	@PostMapping
@@ -82,7 +84,6 @@ public class PurchaseOrderController {
 
 			int perPage) {
 
-		final PurchaseOrderService purchaseOrderQueryService = null;
 		return ResponseEntity.ok(purchaseOrderQueryService.getPurchaseOrders(search, status, supplierId, fromDate,
 				toDate, page, perPage));
 	}
