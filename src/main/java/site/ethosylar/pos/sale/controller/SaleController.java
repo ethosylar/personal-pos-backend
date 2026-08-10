@@ -1,5 +1,10 @@
 package site.ethosylar.pos.sale.controller;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -30,8 +36,10 @@ public class SaleController {
 	private final SaleService saleService;
 
 	private final SaleVoidService saleVoidService;
-	
+
 	private final SaleQueryService saleQueryService;
+
+	private static final ZoneId BUSINESS_ZONE = ZoneId.of("Asia/Kuala_Lumpur");
 
 	// =========================================================
 	// GET SALE DETAIL / HISTORY
@@ -62,5 +70,27 @@ public class SaleController {
 	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@Valid @ModelAttribute SaleFilterRequest filter) {
 
 		return ResponseEntity.ok(saleQueryService.search(filter));
+	}
+
+	@GetMapping
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
+	public ResponseEntity<PageResponse<SaleSummaryResponse>> index(
+
+			@RequestParam(required = false) String search,
+
+			@RequestParam(required = false) String status,
+
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+
+			@RequestParam(defaultValue = "1") int page,
+
+			@RequestParam(defaultValue = "20") int perPage) {
+
+		OffsetDateTime from = fromDate != null ? fromDate.atStartOfDay(BUSINESS_ZONE).toOffsetDateTime() : null;
+		OffsetDateTime to = toDate != null ? toDate.plusDays(1).atStartOfDay(BUSINESS_ZONE).toOffsetDateTime() : null;
+
+		return ResponseEntity.ok(saleQueryService.getSales(search, status, from, to, page, perPage));
 	}
 }

@@ -1,5 +1,6 @@
 package site.ethosylar.pos.sale.service;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.sale.entity.SaleEntity;
 import site.ethosylar.pos.sale.mapper.SaleMapper;
+import site.ethosylar.pos.sale.projection.SaleSummaryProjection;
 import site.ethosylar.pos.sale.repository.SaleRepository;
 import site.ethosylar.pos.sale.request.SaleFilterRequest;
 import site.ethosylar.pos.sale.response.SaleSummaryResponse;
@@ -88,5 +90,54 @@ public class SaleQueryService {
 		}
 
 		return value.trim();
+	}
+
+	private SaleSummaryResponse toSummary(SaleSummaryProjection row) {
+
+		return SaleSummaryResponse.builder()
+
+				.id(row.getId())
+
+				.saleNumber(row.getSaleNumber())
+
+				.statusCode(row.getStatusCode())
+
+				.statusName(row.getStatusName())
+
+				.soldAt(row.getSoldAt())
+
+				.itemCount(Math.toIntExact(row.getItemCount()))
+
+				.subtotal(row.getSubtotal())
+
+				.discountAmount(row.getDiscountAmount())
+
+				.taxAmount(row.getTaxAmount())
+
+				.totalAmount(row.getTotalAmount())
+
+				.totalCost(row.getTotalCost())
+
+				.grossProfit(row.getGrossProfit())
+
+				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public PageResponse<SaleSummaryResponse> getSales(String search, String statusCode, OffsetDateTime fromDate,
+			OffsetDateTime toDate, int page, int perPage) {
+
+		int safePage = Math.max(page, 1);
+
+		int safePerPage = Math.min(Math.max(perPage, 1), 100);
+
+		PageRequest pageable = PageRequest.of(safePage - 1, safePerPage);
+
+		Page<SaleSummaryProjection> result = saleRepository.findSaleSummaries(normalize(search), normalize(statusCode),
+				fromDate, toDate, pageable);
+
+		Page<SaleSummaryResponse> mapped = result.map(this::toSummary);
+
+		return PageResponse.from(mapped);
 	}
 }

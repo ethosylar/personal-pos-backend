@@ -26,6 +26,7 @@ import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.product.entity.ProductEntity;
 import site.ethosylar.pos.product.mapper.ProductMapper;
+import site.ethosylar.pos.product.projection.ProductSummaryProjection;
 import site.ethosylar.pos.product.repository.ProductRepository;
 import site.ethosylar.pos.product.request.ChangeProductAvailabilityRequest;
 import site.ethosylar.pos.product.request.ChangeProductPriceRequest;
@@ -33,6 +34,7 @@ import site.ethosylar.pos.product.request.CreateProductRequest;
 import site.ethosylar.pos.product.request.ProductFilterRequest;
 import site.ethosylar.pos.product.request.UpdateProductRequest;
 import site.ethosylar.pos.product.response.ProductResponse;
+import site.ethosylar.pos.product.response.ProductSummaryResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -343,5 +345,38 @@ public class ProductService {
 		}
 
 		return value.trim();
+	}
+
+	private ProductSummaryResponse toSummary(ProductSummaryProjection row) {
+
+		return ProductSummaryResponse.builder()
+
+				.id(row.getId())
+
+				.code(row.getCode())
+
+				.name(row.getName())
+
+				.categoryId(row.getCategoryId())
+
+				.categoryName(row.getCategoryName())
+
+				.sellingPrice(row.getSellingPrice())
+
+				.active(row.getActive())
+
+				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public PageResponse<ProductSummaryResponse> getProducts(String search, int page, int perPage) {
+
+		PageRequest pageable = PageRequest.of(Math.max(page - 1, 0), perPage, Sort.by("name").ascending());
+
+		Page<ProductSummaryProjection> result = productRepository.findProductSummaries(normalize(search), pageable);
+
+		Page<ProductSummaryResponse> mapped = result.map(this::toSummary);
+
+		return PageResponse.from(mapped);
 	}
 }

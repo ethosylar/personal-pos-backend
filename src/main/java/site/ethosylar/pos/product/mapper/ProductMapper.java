@@ -3,7 +3,9 @@ package site.ethosylar.pos.product.mapper;
 import org.springframework.stereotype.Component;
 
 import site.ethosylar.pos.product.entity.ProductEntity;
+import site.ethosylar.pos.product.projection.ProductSummaryProjection;
 import site.ethosylar.pos.product.response.ProductResponse;
+import site.ethosylar.pos.product.response.ProductSummaryResponse;
 
 @Component
 public class ProductMapper {

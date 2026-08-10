@@ -29,118 +29,53 @@ import site.ethosylar.pos.expense.service.ExpenseService;
 @RequiredArgsConstructor
 public class ExpenseController {
 
-    private final ExpenseService expenseService;
+	private final ExpenseService expenseService;
 
-    private final ExpenseQueryService expenseQueryService;
+	private final ExpenseQueryService expenseQueryService;
 
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'VIEW')")
+	@GetMapping
+	public ResponseEntity<PageResponse<ExpenseResponse>> search(@Valid @ModelAttribute ExpenseFilterRequest filter) {
 
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'VIEW')"
-    )
-    @GetMapping
-    public ResponseEntity<
-            PageResponse<ExpenseResponse>>
-            search(
-                    @Valid
-                    @ModelAttribute
-                    ExpenseFilterRequest filter) {
+		return ResponseEntity.ok(expenseQueryService.search(filter));
+	}
 
-        return ResponseEntity.ok(
-            expenseQueryService.search(filter)
-        );
-    }
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'VIEW')")
+	@GetMapping("/{id}")
+	public ResponseEntity<ExpenseResponse> getById(@PathVariable Long id) {
 
+		return ResponseEntity.ok(expenseService.getById(id));
+	}
 
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'VIEW')"
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<ExpenseResponse>
-            getById(
-                    @PathVariable Long id) {
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'CREATE')")
+	@PostMapping
+	public ResponseEntity<ExpenseResponse> create(@Valid @RequestBody CreateExpenseRequest request) {
 
-        return ResponseEntity.ok(
-            expenseService.getById(id)
-        );
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(expenseService.create(request));
+	}
 
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'UPDATE')")
+	@PutMapping("/{id}")
+	public ResponseEntity<ExpenseResponse> update(@PathVariable Long id,
 
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'CREATE')"
-    )
-    @PostMapping
-    public ResponseEntity<ExpenseResponse>
-            create(
-                    @Valid
-                    @RequestBody
-                    CreateExpenseRequest request) {
+			@Valid @RequestBody UpdateExpenseRequest request) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                    expenseService.create(request)
-                );
-    }
+		return ResponseEntity.ok(expenseService.update(id, request));
+	}
 
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'POST')")
+	@PostMapping("/{id}/post")
+	public ResponseEntity<ExpenseResponse> post(@PathVariable Long id) {
 
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'UPDATE')"
-    )
-    @PutMapping("/{id}")
-    public ResponseEntity<ExpenseResponse>
-            update(
-                    @PathVariable Long id,
+		return ResponseEntity.ok(expenseService.post(id));
+	}
 
-                    @Valid
-                    @RequestBody
-                    UpdateExpenseRequest request) {
+	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'EXPENSE', 'VOID')")
+	@PostMapping("/{id}/void")
+	public ResponseEntity<ExpenseResponse> voidExpense(@PathVariable Long id,
 
-        return ResponseEntity.ok(
-            expenseService.update(
-                id,
-                request
-            )
-        );
-    }
+			@Valid @RequestBody VoidExpenseRequest request) {
 
-
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'POST')"
-    )
-    @PostMapping("/{id}/post")
-    public ResponseEntity<ExpenseResponse>
-            post(
-                    @PathVariable Long id) {
-
-        return ResponseEntity.ok(
-            expenseService.post(id)
-        );
-    }
-
-
-    @PreAuthorize(
-        "@permissionService.hasPermission("
-        + "authentication, 'EXPENSE', 'VOID')"
-    )
-    @PostMapping("/{id}/void")
-    public ResponseEntity<ExpenseResponse>
-            voidExpense(
-                    @PathVariable Long id,
-
-                    @Valid
-                    @RequestBody
-                    VoidExpenseRequest request) {
-
-        return ResponseEntity.ok(
-            expenseService.voidExpense(
-                id,
-                request
-            )
-        );
-    }
+		return ResponseEntity.ok(expenseService.voidExpense(id, request));
+	}
 }

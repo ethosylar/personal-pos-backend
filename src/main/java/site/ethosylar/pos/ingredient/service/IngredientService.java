@@ -1,5 +1,7 @@
 package site.ethosylar.pos.ingredient.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.response.PageResponse;
 import site.ethosylar.pos.ingredient.entity.IngredientEntity;
 import site.ethosylar.pos.ingredient.mapper.IngredientMapper;
+import site.ethosylar.pos.ingredient.projection.IngredientSummaryProjection;
 import site.ethosylar.pos.ingredient.repository.IngredientRepository;
 import site.ethosylar.pos.ingredient.repository.IngredientSupplierRepository;
 import site.ethosylar.pos.ingredient.request.CreateIngredientRequest;
@@ -253,5 +256,59 @@ public class IngredientService {
 		}
 
 		return value.trim();
+	}
+
+	private IngredientSummaryResponse toSummary(IngredientSummaryProjection row) {
+
+		BigDecimal unitCost = BigDecimal.ZERO;
+
+		if (row.getPurchasePrice() != null && row.getSupplierBaseQuantity() != null
+				&& row.getSupplierBaseQuantity().compareTo(BigDecimal.ZERO) > 0) {
+
+			unitCost = row.getPurchasePrice().divide(row.getSupplierBaseQuantity(), 6, RoundingMode.HALF_UP);
+		}
+
+		return IngredientSummaryResponse.builder()
+
+				.id(row.getId())
+
+				.code(row.getCode())
+
+				.name(row.getName())
+
+				.baseUnitId(row.getBaseUnitId())
+
+				.baseUnitCode(row.getBaseUnitCode())
+
+				.baseUnitName(row.getBaseUnitName())
+
+				.preferredSupplierId(row.getPreferredSupplierId())
+
+				.preferredSupplierName(row.getPreferredSupplierName())
+
+				.currentUnitCost(unitCost)
+
+				.active(row.getActive())
+
+				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public PageResponse<IngredientSummaryResponse> getIngredients(String search, int page, int perPage) {
+
+		int safePage = Math.max(page, 1);
+
+		int safePerPage = Math.min(Math.max(perPage, 1), 100);
+
+		PageRequest pageable = PageRequest.of(safePage - 1, safePerPage, Sort.by("name").ascending());
+
+		String normalizedSearch = normalize(search);
+
+		Page<IngredientSummaryProjection> result = ingredientRepository.findIngredientSummaries(normalizedSearch,
+				pageable);
+
+		Page<IngredientSummaryResponse> mapped = result.map(this::toSummary);
+
+		return PageResponse.from(mapped);
 	}
 }

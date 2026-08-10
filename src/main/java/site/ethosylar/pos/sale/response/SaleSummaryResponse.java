@@ -41,4 +41,10 @@ public class SaleSummaryResponse {
 	private String voidReason;
 
 	private OffsetDateTime createdAt;
+	
+	private Integer itemCount;
+	
+	private BigDecimal totalCost;
+	
+	private BigDecimal grossProfit;
 }
