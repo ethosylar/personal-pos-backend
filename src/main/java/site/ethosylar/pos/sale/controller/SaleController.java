@@ -65,14 +65,14 @@ public class SaleController {
 		return ResponseEntity.ok(saleVoidService.voidSale(saleId, request));
 	}
 
-	@GetMapping
-	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
-	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@ModelAttribute SaleFilterRequest request) {
-
-		return ResponseEntity.ok(saleQueryService.getSales(request.getSearch(), request.getStatus(),
-				request.getFromDate(), request.getToDate(), request.getPage() != null ? request.getPage() : 1,
-				request.getPerPage() != null ? request.getPerPage() : 20));
-	}
+//	@GetMapping
+//	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")
+//	public ResponseEntity<PageResponse<SaleSummaryResponse>> search(@ModelAttribute SaleFilterRequest request) {
+//
+//		return ResponseEntity.ok(saleQueryService.getSales(request.getSearch(), request.getStatus(),
+//				request.getFromDate(), request.getToDate(), request.getPage() != null ? request.getPage() : 1,
+//				request.getPerPage() != null ? request.getPerPage() : 20));
+//	}
 
 	@GetMapping
 	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'SALES', 'VIEW')")

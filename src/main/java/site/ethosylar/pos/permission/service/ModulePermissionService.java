@@ -2,10 +2,12 @@ package site.ethosylar.pos.permission.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.cache.CacheNames;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
 import site.ethosylar.pos.module.repository.ModuleRepository;
 import site.ethosylar.pos.permission.mapper.ModulePermissionMapper;
@@ -23,6 +25,8 @@ public class ModulePermissionService {
 
 	private final ModulePermissionMapper modulePermissionMapper;
 
+	@Cacheable(cacheNames = CacheNames.MODULE_PERMISSIONS, key = "#moduleId", sync = true)
+	@Transactional(readOnly = true)
 	public List<ModulePermissionResponse> getActivePermissionsByModule(Long moduleId) {
 
 		if (!moduleRepository.existsById(moduleId)) {

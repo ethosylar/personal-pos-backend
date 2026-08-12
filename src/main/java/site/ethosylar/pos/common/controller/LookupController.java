@@ -69,7 +69,7 @@ public class LookupController {
 
 		return ResponseEntity.ok(auditActionService.getActiveActions());
 	}
-
+	
 	@GetMapping("/units")
 	public ResponseEntity<List<UnitOfMeasureResponse>> getUnits() {
 

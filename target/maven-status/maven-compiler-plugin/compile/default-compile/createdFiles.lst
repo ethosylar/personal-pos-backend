@@ -30,6 +30,7 @@ site\ethosylar\pos\procurement\service\GoodsReceiptService.class
 site\ethosylar\pos\module\entity\ModuleEntity.class
 site\ethosylar\pos\recipe\response\RecipeDetailResponse.class
 site\ethosylar\pos\procurement\repository\GoodsReceiptItemRepository.class
+site\ethosylar\pos\common\cache\CacheNames.class
 site\ethosylar\pos\staff\repository\SalaryPayTypeRepository.class
 site\ethosylar\pos\procurement\response\GoodsReceiptResponse.class
 site\ethosylar\pos\sale\service\SaleService.class
@@ -256,6 +257,7 @@ site\ethosylar\pos\ingredient\service\IngredientCostService.class
 site\ethosylar\pos\sale\response\SaleSummaryResponse$SaleSummaryResponseBuilder.class
 site\ethosylar\pos\common\controller\LookupController.class
 site\ethosylar\pos\procurement\repository\PurchaseOrderItemRepository.class
+site\ethosylar\pos\config\CacheConfig.class
 site\ethosylar\pos\payment\repository\PaymentMethodRepository.class
 site\ethosylar\pos\procurement\request\CreateGoodsReceiptRequest.class
 site\ethosylar\pos\sale\request\UpdateSaleItemRequest.class
