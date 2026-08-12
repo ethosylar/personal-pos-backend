@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 
 import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.security.handler.RestAccessDeniedHandler;
@@ -31,7 +32,9 @@ public class SecurityConfig {
 			throws Exception {
 
 		LoginRateLimitFilter rateLimitFilter = new LoginRateLimitFilter(rateLimitService, objectMapper);
-		http.csrf(csrf -> csrf.disable())
+		//http.csrf(csrf -> csrf.disable())
+		http
+	    .cors(Customizer.withDefaults())
 
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -43,6 +46,15 @@ public class SecurityConfig {
 
 						.anyRequest().authenticated())
 				.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+
+				.headers(headers -> headers
+
+						.frameOptions(frame -> frame.deny())
+
+						.contentTypeOptions(Customizer.withDefaults())
+
+						.referrerPolicy(
+								referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)))
 
 				.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
