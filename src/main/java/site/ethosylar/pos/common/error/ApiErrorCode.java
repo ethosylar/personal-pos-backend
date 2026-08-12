@@ -31,5 +31,8 @@ public enum ApiErrorCode {
     INVALID_SALE_STATE,
 
     // Payroll
-    INVALID_PAYROLL_STATE
+    INVALID_PAYROLL_STATE,
+    
+    // Rate Limiting
+    RATE_LIMIT_EXCEEDED
 }

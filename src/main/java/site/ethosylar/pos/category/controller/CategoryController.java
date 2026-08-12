@@ -1,5 +1,6 @@
 package site.ethosylar.pos.category.controller;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import site.ethosylar.pos.category.request.UpdateCategoryRequest;
 import site.ethosylar.pos.category.response.CategoryResponse;
 import site.ethosylar.pos.category.service.IngredientCategoryService;
 import site.ethosylar.pos.category.service.ProductCategoryService;
+import site.ethosylar.pos.common.cache.CacheNames;
 import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.request.MasterDataFilterRequest;
@@ -79,7 +81,7 @@ public class CategoryController {
 	 *
 	 * and IngredientCategoryService.
 	 */
-	
+	@Cacheable(cacheNames = CacheNames.INGREDIENT_CATEGORIES, sync = true)
 	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'CATEGORY', 'VIEW')")
 	@GetMapping("/ingredients")
 	public ResponseEntity<PageResponse<CategoryResponse>> getIngredientCategories(
@@ -97,7 +99,8 @@ public class CategoryController {
 
 	@PreAuthorize("@permissionService.hasPermission(" + "authentication, 'CATEGORY', 'CREATE')")
 	@PostMapping("/ingredients")
-	public ResponseEntity<CategoryResponse> createIngredientCategory(@Valid @RequestBody CreateCategoryRequest request) {
+	public ResponseEntity<CategoryResponse> createIngredientCategory(
+			@Valid @RequestBody CreateCategoryRequest request) {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(ingredientCategoryService.create(request));
 	}

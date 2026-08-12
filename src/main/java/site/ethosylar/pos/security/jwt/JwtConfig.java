@@ -18,55 +18,38 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 @Configuration
 public class JwtConfig {
 
-    @Value("${pos.security.jwt.secret}")
-    private String encodedSecret;
+	@Value("${pos.security.jwt.secret}")
+	private String encodedSecret;
 
-    @Value("${pos.security.jwt.issuer}")
-    private String issuer;
+	@Value("${pos.security.jwt.issuer}")
+	private String issuer;
 
-    @Bean
-    SecretKey jwtSecretKey() {
+	@Bean
+	SecretKey jwtSecretKey() {
 
-        byte[] keyBytes =
-                Base64.getDecoder().decode(encodedSecret);
+		byte[] keyBytes = Base64.getDecoder().decode(encodedSecret);
 
-        if (keyBytes.length < 32) {
-            throw new IllegalStateException(
-                    "JWT secret must contain at least 256 bits."
-            );
-        }
+		if (keyBytes.length < 32) {
+			throw new IllegalStateException("JWT secret must contain at least 256 bits.");
+		}
 
-        return new SecretKeySpec(
-                keyBytes,
-                "HmacSHA256"
-        );
-    }
+		return new SecretKeySpec(keyBytes, "HmacSHA256");
+	}
 
-    @Bean
-    JwtEncoder jwtEncoder(
-            SecretKey jwtSecretKey) {
+	@Bean
+	JwtEncoder jwtEncoder(SecretKey jwtSecretKey) {
 
-        return NimbusJwtEncoder
-                .withSecretKey(jwtSecretKey)
-                .algorithm(MacAlgorithm.HS256)
-                .build();
-    }
+		return NimbusJwtEncoder.withSecretKey(jwtSecretKey).algorithm(MacAlgorithm.HS256).build();
+	}
 
-    @Bean
-    JwtDecoder jwtDecoder(
-            SecretKey jwtSecretKey) {
+	@Bean
+	JwtDecoder jwtDecoder(SecretKey jwtSecretKey) {
 
-        NimbusJwtDecoder decoder =
-                NimbusJwtDecoder
-                    .withSecretKey(jwtSecretKey)
-                    .macAlgorithm(MacAlgorithm.HS256)
-                    .build();
+		NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(jwtSecretKey).macAlgorithm(MacAlgorithm.HS256)
+				.build();
 
-        decoder.setJwtValidator(
-                JwtValidators
-                    .createDefaultWithIssuer(issuer)
-        );
+		decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer));
 
-        return decoder;
-    }
+		return decoder;
+	}
 }

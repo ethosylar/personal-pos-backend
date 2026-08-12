@@ -11,14 +11,17 @@ import java.util.Map;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.accounting.service.AccountingPeriodService;
 import site.ethosylar.pos.audit.request.AuditLogRequest;
 import site.ethosylar.pos.audit.service.AuditService;
 import site.ethosylar.pos.common.exception.BusinessRuleException;
 import site.ethosylar.pos.common.exception.ResourceNotFoundException;
+import site.ethosylar.pos.common.outbox.OutboxAggregateTypes;
+import site.ethosylar.pos.common.outbox.OutboxEventTypes;
+import site.ethosylar.pos.common.outbox.service.OutboxService;
 import site.ethosylar.pos.ingredient.entity.IngredientEntity;
 import site.ethosylar.pos.ingredient.repository.IngredientRepository;
 import site.ethosylar.pos.inventory.repository.InventoryMovementRepository;
@@ -38,6 +41,7 @@ import site.ethosylar.pos.recipe.service.RecipeCostingService;
 import site.ethosylar.pos.sale.entity.SaleEntity;
 import site.ethosylar.pos.sale.entity.SaleItemEntity;
 import site.ethosylar.pos.sale.entity.SaleStatusEntity;
+import site.ethosylar.pos.sale.event.SaleCompletedEventPayload;
 import site.ethosylar.pos.sale.mapper.SaleMapper;
 import site.ethosylar.pos.sale.model.SaleIngredientUsage;
 import site.ethosylar.pos.sale.repository.SaleItemRepository;
@@ -80,6 +84,9 @@ public class SaleCheckoutService {
 
 	private final AccountingPeriodService accountingPeriodService;
 
+	private final OutboxService outboxService;
+
+	@Transactional
 	public SaleResponse complete(Long saleId, CompleteSaleRequest request) {
 
 		SaleEntity sale = saleRepository.findByIdForUpdate(saleId)
@@ -202,7 +209,7 @@ public class SaleCheckoutService {
 		}
 
 		OffsetDateTime completedAt = OffsetDateTime.now();
-		
+
 		accountingPeriodService.ensureOpen(completedAt);
 
 		UserEntity cashier = getCurrentUser();
@@ -238,6 +245,12 @@ public class SaleCheckoutService {
 		sale.setStatus(getSaleStatus("COMPLETED"));
 
 		saleRepository.save(sale);
+
+		SaleCompletedEventPayload payload = new SaleCompletedEventPayload(sale.getId(), sale.getSaleNumber(),
+				sale.getSoldAt(), sale.getSubtotal(), sale.getTotalAmount(), sale.getTotalCostSnapshot(),
+				sale.getGrossProfitSnapshot());
+
+		outboxService.record(OutboxAggregateTypes.SALE, sale.getId(), OutboxEventTypes.SALE_COMPLETED, payload);
 
 		auditService.log(AuditLogRequest.builder().actionCode("STATUS_CHANGE").moduleCode("POS").entityType("SALE")
 				.entityId(sale.getId()).description("POS sale completed.").afterData(snapshot(sale)).build());

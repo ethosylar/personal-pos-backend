@@ -30,9 +30,11 @@ site\ethosylar\pos\procurement\service\GoodsReceiptService.class
 site\ethosylar\pos\module\entity\ModuleEntity.class
 site\ethosylar\pos\recipe\response\RecipeDetailResponse.class
 site\ethosylar\pos\procurement\repository\GoodsReceiptItemRepository.class
+site\ethosylar\pos\common\cache\CacheNames.class
 site\ethosylar\pos\staff\repository\SalaryPayTypeRepository.class
 site\ethosylar\pos\procurement\response\GoodsReceiptResponse.class
 site\ethosylar\pos\sale\service\SaleService.class
+site\ethosylar\pos\common\outbox\OutboxStatuses.class
 site\ethosylar\pos\payment\request\CheckoutPaymentRequest.class
 site\ethosylar\pos\common\error\ApiFieldError$ApiFieldErrorBuilder.class
 site\ethosylar\pos\ingredient\controller\IngredientController.class
@@ -170,6 +172,7 @@ site\ethosylar\pos\permission\entity\RoleModulePermissionEntity.class
 site\ethosylar\pos\ingredient\request\CreateIngredientSupplierRequest.class
 site\ethosylar\pos\common\exception\DuplicateResourceException.class
 site\ethosylar\pos\recipe\request\UpdateRecipeItemRequest.class
+site\ethosylar\pos\common\outbox\OutboxAggregateTypes.class
 site\ethosylar\pos\expense\entity\ExpenseStatusEntity.class
 site\ethosylar\pos\sale\entity\SaleEntity.class
 site\ethosylar\pos\category\service\IngredientCategoryService.class
@@ -178,6 +181,7 @@ site\ethosylar\pos\staff\entity\StaffStatusEntity.class
 site\ethosylar\pos\dashboard\response\MonthlySalesTrendResponse$MonthlySalesTrendResponseBuilder.class
 site\ethosylar\pos\procurement\entity\PurchaseOrderStatusEntity.class
 site\ethosylar\pos\supplier\entity\SupplierEntity.class
+site\ethosylar\pos\sale\event\SaleCompletedEventPayload.class
 site\ethosylar\pos\user\entity\UserEntity.class
 site\ethosylar\pos\user\response\UserStatusResponse$UserStatusResponseBuilder.class
 site\ethosylar\pos\user\repository\UserStatusRepository.class
@@ -245,6 +249,7 @@ site\ethosylar\pos\inventory\response\InventoryMovementResponse.class
 site\ethosylar\pos\auth\request\LoginRequest.class
 site\ethosylar\pos\ingredient\request\CreateIngredientRequest.class
 site\ethosylar\pos\payment\entity\PaymentStatusEntity.class
+site\ethosylar\pos\common\outbox\repository\OutboxEventRepository.class
 site\ethosylar\pos\expense\response\ExpenseCategoryResponse$ExpenseCategoryResponseBuilder.class
 site\ethosylar\pos\accounting\controller\MonthlyAccountingController.class
 site\ethosylar\pos\recipe\repository\RecipeRepository.class
@@ -255,7 +260,9 @@ site\ethosylar\pos\inventory\response\InventoryStockPolicyResponse.class
 site\ethosylar\pos\ingredient\service\IngredientCostService.class
 site\ethosylar\pos\sale\response\SaleSummaryResponse$SaleSummaryResponseBuilder.class
 site\ethosylar\pos\common\controller\LookupController.class
+site\ethosylar\pos\common\outbox\OutboxEventTypes.class
 site\ethosylar\pos\procurement\repository\PurchaseOrderItemRepository.class
+site\ethosylar\pos\config\CacheConfig.class
 site\ethosylar\pos\payment\repository\PaymentMethodRepository.class
 site\ethosylar\pos\procurement\request\CreateGoodsReceiptRequest.class
 site\ethosylar\pos\sale\request\UpdateSaleItemRequest.class
@@ -287,6 +294,7 @@ site\ethosylar\pos\procurement\service\ReorderPurchaseOrderService.class
 site\ethosylar\pos\unit\service\UnitOfMeasureService.class
 site\ethosylar\pos\supplier\response\SupplierDetailResponse$SupplierDetailResponseBuilder.class
 site\ethosylar\pos\role\request\AssignModulePermissionsRequest.class
+site\ethosylar\pos\common\outbox\service\OutboxService.class
 site\ethosylar\pos\module\response\ModuleResponse$ModuleResponseBuilder.class
 site\ethosylar\pos\audit\response\AuditActorResponse.class
 site\ethosylar\pos\audit\response\AuditModuleResponse.class
@@ -323,7 +331,9 @@ site\ethosylar\pos\recipe\entity\RecipeItemEntity.class
 site\ethosylar\pos\audit\mapper\AuditLogMapper.class
 site\ethosylar\pos\inventory\entity\InventoryStockPolicyEntity.class
 site\ethosylar\pos\common\response\PageResponse.class
+site\ethosylar\pos\security\ratelimit\RateLimitService.class
 site\ethosylar\pos\recipe\repository\RecipeItemRepository.class
+site\ethosylar\pos\config\CorsConfig.class
 site\ethosylar\pos\dashboard\response\InventorySummaryResponse.class
 site\ethosylar\pos\staff\request\CreateStaffRequest.class
 site\ethosylar\pos\recipe\mapper\RecipeMapper.class
@@ -386,6 +396,7 @@ site\ethosylar\pos\role\repository\RoleModuleRepository.class
 site\ethosylar\pos\category\entity\ProductCategoryEntity.class
 site\ethosylar\pos\expense\entity\ExpenseCategoryEntity.class
 site\ethosylar\pos\common\request\MasterDataFilterRequest.class
+site\ethosylar\pos\security\ratelimit\LoginRateLimitFilter.class
 site\ethosylar\pos\inventory\request\InventoryMovementFilterRequest.class
 site\ethosylar\pos\auth\service\AuthService.class
 site\ethosylar\pos\product\response\ProductDetailResponse.class
@@ -402,6 +413,7 @@ site\ethosylar\pos\product\response\ProductSummaryResponse$ProductSummaryRespons
 site\ethosylar\pos\audit\response\AuditModuleResponse$AuditModuleResponseBuilder.class
 site\ethosylar\pos\ingredient\service\IngredientSupplierService.class
 site\ethosylar\pos\user\service\UserService.class
+site\ethosylar\pos\common\outbox\entity\OutboxEventEntity.class
 site\ethosylar\pos\audit\repository\AuditLogRepository.class
 site\ethosylar\pos\expense\service\ExpenseLookupService.class
 site\ethosylar\pos\expense\service\ExpenseNumberService.class

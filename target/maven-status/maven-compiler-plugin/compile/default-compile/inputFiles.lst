@@ -47,6 +47,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\response\CategoryResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\IngredientCategoryService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\category\service\ProductCategoryService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\cache\CacheNames.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\config\ApiPaths.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\controller\LookupController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\entity\TimestampedEntity.java
@@ -58,10 +59,18 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\DuplicateResourceException.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\GlobalExceptionHandler.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\exception\ResourceNotFoundException.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\entity\OutboxEventEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\OutboxAggregateTypes.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\OutboxEventTypes.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\OutboxStatuses.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\repository\OutboxEventRepository.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\service\OutboxService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\request\ChangeActiveStatusRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\request\MasterDataFilterRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\response\ApiErrorResponse.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\response\PageResponse.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\CacheConfig.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\CorsConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\PasswordConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\config\SecurityConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\dashboard\controller\DashboardController.java
@@ -260,6 +269,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\entity\SaleEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\entity\SaleItemEntity.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\entity\SaleStatusEntity.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\event\SaleCompletedEventPayload.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\mapper\SaleMapper.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\model\SaleIngredientUsage.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\sale\projection\SaleSummaryProjection.java
@@ -286,6 +296,8 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\handler\RestAuthenticationEntryPoint.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\jwt\JwtConfig.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\jwt\JwtTokenService.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\ratelimit\LoginRateLimitFilter.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\ratelimit\RateLimitService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\security\service\DatabaseUserDetailsService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\staff\controller\StaffController.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\staff\entity\SalaryPayTypeEntity.java

@@ -2,10 +2,12 @@ package site.ethosylar.pos.user.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.ethosylar.pos.common.cache.CacheNames;
 import site.ethosylar.pos.user.repository.UserStatusRepository;
 import site.ethosylar.pos.user.response.UserStatusResponse;
 
@@ -16,6 +18,8 @@ public class UserStatusService {
 
 	private final UserStatusRepository userStatusRepository;
 
+	@Cacheable(cacheNames = CacheNames.USER_STATUSES, sync = true)
+	@Transactional(readOnly = true)
 	public List<UserStatusResponse> getActiveStatuses() {
 
 		return userStatusRepository.findByActiveTrueOrderByNameAsc().stream().map(status -> UserStatusResponse.builder()
