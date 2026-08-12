@@ -325,6 +325,7 @@ site\ethosylar\pos\recipe\entity\RecipeItemEntity.class
 site\ethosylar\pos\audit\mapper\AuditLogMapper.class
 site\ethosylar\pos\inventory\entity\InventoryStockPolicyEntity.class
 site\ethosylar\pos\common\response\PageResponse.class
+site\ethosylar\pos\security\ratelimit\RateLimitService.class
 site\ethosylar\pos\recipe\repository\RecipeItemRepository.class
 site\ethosylar\pos\dashboard\response\InventorySummaryResponse.class
 site\ethosylar\pos\staff\request\CreateStaffRequest.class
@@ -388,6 +389,7 @@ site\ethosylar\pos\role\repository\RoleModuleRepository.class
 site\ethosylar\pos\category\entity\ProductCategoryEntity.class
 site\ethosylar\pos\expense\entity\ExpenseCategoryEntity.class
 site\ethosylar\pos\common\request\MasterDataFilterRequest.class
+site\ethosylar\pos\security\ratelimit\LoginRateLimitFilter.class
 site\ethosylar\pos\inventory\request\InventoryMovementFilterRequest.class
 site\ethosylar\pos\auth\service\AuthService.class
 site\ethosylar\pos\product\response\ProductDetailResponse.class

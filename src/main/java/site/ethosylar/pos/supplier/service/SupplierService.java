@@ -22,7 +22,6 @@ import site.ethosylar.pos.common.exception.ResourceNotFoundException;
 import site.ethosylar.pos.common.request.ChangeActiveStatusRequest;
 import site.ethosylar.pos.common.request.MasterDataFilterRequest;
 import site.ethosylar.pos.common.response.PageResponse;
-import site.ethosylar.pos.ingredient.repository.IngredientSupplierRepository;
 import site.ethosylar.pos.supplier.entity.SupplierEntity;
 import site.ethosylar.pos.supplier.mapper.SupplierMapper;
 import site.ethosylar.pos.supplier.projection.SupplierSummaryProjection;
@@ -40,8 +39,6 @@ public class SupplierService {
 	private final SupplierRepository repository;
 	private final SupplierMapper mapper;
 	private final AuditService auditService;
-	private final IngredientSupplierRepository ingredientSupplierRepository;
-
 	@Transactional(readOnly = true)
 	public PageResponse<SupplierResponse> search(MasterDataFilterRequest filter) {
 

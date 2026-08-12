@@ -1,14 +1,12 @@
 package site.ethosylar.pos.sale.controller;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +18,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.ethosylar.pos.common.config.ApiPaths;
 import site.ethosylar.pos.common.response.PageResponse;
-import site.ethosylar.pos.sale.request.SaleFilterRequest;
 import site.ethosylar.pos.sale.request.VoidSaleRequest;
 import site.ethosylar.pos.sale.response.SaleResponse;
 import site.ethosylar.pos.sale.response.SaleSummaryResponse;
