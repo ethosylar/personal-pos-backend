@@ -2,6 +2,7 @@ package site.ethosylar.pos.common.outbox.repository;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,4 +42,6 @@ public interface OutboxEventRepository extends JpaRepository<OutboxEventEntity, 
 	int releaseStaleProcessing(@Param("processingStatus") String processingStatus,
 			@Param("pendingStatus") String pendingStatus, @Param("cutoff") OffsetDateTime cutoff,
 			@Param("now") OffsetDateTime now);
+
+	Optional<OutboxEventEntity> findByIdAndStatusAndClaimedBy(Long id, String status, String claimedBy);
 }
