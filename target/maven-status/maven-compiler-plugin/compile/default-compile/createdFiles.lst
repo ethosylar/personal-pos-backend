@@ -117,6 +117,7 @@ site\ethosylar\pos\category\entity\IngredientCategoryEntity.class
 site\ethosylar\pos\procurement\controller\PurchaseOrderController.class
 site\ethosylar\pos\staff\repository\StaffRepository.class
 site\ethosylar\pos\common\exception\ApplicationException.class
+site\ethosylar\pos\common\outbox\service\OutboxClaimService.class
 site\ethosylar\pos\product\projection\ProductSummaryProjection.class
 site\ethosylar\pos\procurement\entity\GoodsReceiptEntity.class
 site\ethosylar\pos\ingredient\response\IngredientDetailResponse$IngredientDetailResponseBuilder.class

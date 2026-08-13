@@ -64,6 +64,7 @@ E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\po
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\OutboxEventTypes.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\OutboxStatuses.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\repository\OutboxEventRepository.java
+E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\service\OutboxClaimService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\outbox\service\OutboxService.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\request\ChangeActiveStatusRequest.java
 E:\Development\personal-pos\personal-pos-backend\src\main\java\site\ethosylar\pos\common\request\MasterDataFilterRequest.java

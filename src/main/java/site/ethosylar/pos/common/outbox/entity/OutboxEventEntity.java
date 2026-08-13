@@ -58,4 +58,10 @@ public class OutboxEventEntity {
 
 	@Column(name = "updated_at", nullable = false)
 	private OffsetDateTime updatedAt;
+
+	@Column(name = "claimed_at")
+	private OffsetDateTime claimedAt;
+
+	@Column(name = "claimed_by", length = 100)
+	private String claimedBy;
 }
